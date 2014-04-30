@@ -1,0 +1,83 @@
+sampleDataSet = '/HTo2LongLivedTo4F_MH-1000_MFF-20_CTau1p5To150_8TeV-pythia6/Summer12_DR53X-DEBUG_PU_S10_START53_V7A-v2/AODSIM'  
+
+sampleCMSEnergy = 8000
+
+sampleRelease = "CMSSW_5_3_2_patch4" # original (i.e. RECO file) release, not the one we plan to process them with
+sampleProcessRelease = "CMSSW_5_3_5" # release used to create new files with
+
+sampleNumEvents = 99016
+
+sampleXSec = 1 # pb
+
+# global tag can be extracted from file using edmProvDump filename|grep globaltag
+# note however that this is the tag for *further* processing, not the original tag
+sampleGlobalTag = 'START53_V7A::All'
+
+sampleDuplicateCheckMode = 'checkAllFilesOpened'
+
+sampleType = "SIGNALMC"
+
+
+
+
+
+
+
+
+
+
+samplePatDBSName=""
+
+sampleBaseDir="/store/user/lpcdve/DisplacedLeptons/HTo2LongLivedTo4F_MH1000_MFF20_CTau1p5To150_pat_20140211/demattia//HTo2LongLivedTo4F_MH-1000_MFF-20_CTau1p5To150_8TeV-pythia6/HTo2LongLivedTo4F_MH1000_MFF20_CTau1p5To150_pat_20140211/44ed12438b36eeb4f61ccae26cc96d54/"
+samplePatFiles = [
+sampleBaseDir+"PATtuple_36_1_ywV.root",
+sampleBaseDir+"PATtuple_26_1_iHu.root",
+sampleBaseDir+"PATtuple_11_2_cLy.root",
+sampleBaseDir+"PATtuple_40_2_9Tq.root",
+sampleBaseDir+"PATtuple_48_1_2gR.root",
+sampleBaseDir+"PATtuple_13_1_2QZ.root",
+sampleBaseDir+"PATtuple_28_1_WGh.root",
+sampleBaseDir+"PATtuple_7_3_rE6.root",
+sampleBaseDir+"PATtuple_20_1_m4b.root",
+sampleBaseDir+"PATtuple_41_1_dgI.root",
+sampleBaseDir+"PATtuple_4_1_VWo.root",
+sampleBaseDir+"PATtuple_33_1_i1r.root",
+sampleBaseDir+"PATtuple_32_1_1Jj.root",
+sampleBaseDir+"PATtuple_47_1_Fss.root",
+sampleBaseDir+"PATtuple_9_2_5P1.root",
+sampleBaseDir+"PATtuple_43_1_Ct9.root",
+sampleBaseDir+"PATtuple_44_1_mEy.root",
+sampleBaseDir+"PATtuple_15_1_BlV.root",
+sampleBaseDir+"PATtuple_8_1_44u.root",
+sampleBaseDir+"PATtuple_19_2_TgG.root",
+sampleBaseDir+"PATtuple_39_2_S99.root",
+sampleBaseDir+"PATtuple_50_1_zXj.root",
+sampleBaseDir+"PATtuple_17_1_FN8.root",
+sampleBaseDir+"PATtuple_22_1_C8j.root",
+sampleBaseDir+"PATtuple_42_1_nxh.root",
+sampleBaseDir+"PATtuple_10_1_1qs.root",
+sampleBaseDir+"PATtuple_29_1_unM.root",
+sampleBaseDir+"PATtuple_23_3_wyx.root",
+sampleBaseDir+"PATtuple_49_1_vU6.root",
+sampleBaseDir+"PATtuple_31_1_Ler.root",
+sampleBaseDir+"PATtuple_46_1_kUa.root",
+sampleBaseDir+"PATtuple_25_1_Fah.root",
+sampleBaseDir+"PATtuple_12_2_Eah.root",
+sampleBaseDir+"PATtuple_34_1_e49.root",
+sampleBaseDir+"PATtuple_30_1_vWM.root",
+sampleBaseDir+"PATtuple_21_1_UT0.root",
+sampleBaseDir+"PATtuple_37_1_Ngb.root",
+sampleBaseDir+"PATtuple_16_1_vca.root",
+sampleBaseDir+"PATtuple_1_1_gvW.root",
+sampleBaseDir+"PATtuple_35_1_PpK.root",
+sampleBaseDir+"PATtuple_6_1_iT0.root",
+sampleBaseDir+"PATtuple_38_2_qXP.root",
+sampleBaseDir+"PATtuple_45_1_JOr.root",
+sampleBaseDir+"PATtuple_27_1_DZb.root",
+sampleBaseDir+"PATtuple_24_1_ZMK.root",
+sampleBaseDir+"PATtuple_2_2_Ala.root",
+sampleBaseDir+"PATtuple_3_1_SBZ.root",
+sampleBaseDir+"PATtuple_5_1_xlX.root",
+sampleBaseDir+"PATtuple_18_1_iem.root",
+sampleBaseDir+"PATtuple_14_1_NJW.root",
+]
