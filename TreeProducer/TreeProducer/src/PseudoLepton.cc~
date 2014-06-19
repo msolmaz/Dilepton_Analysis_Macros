@@ -24,8 +24,8 @@ PseudoLepton::PseudoLepton(const reco::Track & aTrack) :
   isTrackerMuon_(false),
   isLooseMuon_(false),
   isCentralTrack_(false)
-//   innerPositionX(-999), innerPositionY(-999), innerPositionZ(-999),
-//   outerPositionX(-999), outerPositionY(-999), outerPositionZ(-999)
+  innerPositionX(-999), innerPositionY(-999), innerPositionZ(-999),
+  outerPositionX(-999), outerPositionY(-999), outerPositionZ(-999)
 {
   p4_.SetCoordinates(aTrack.momentum().x(),aTrack.momentum().y(),
                      aTrack.momentum().z(),sqrt(aTrack.momentum().mag2()+0.14*0.14));

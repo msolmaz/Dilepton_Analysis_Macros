@@ -1,10 +1,12 @@
 #ifndef TREELEPTON_H
 #define TREELEPTON_H
 
+#include "TreeProducer/TreeProducer/interface/MuonTime.h"
+
 struct TreeLepton
 {
   TreeLepton() :
-    validTrack(-1),trackChi2(-1),nLayers(-1),nLayers3D(-1),tip(-9999),lip(-9999),highPurity(-999),
+    validTrack(false),trackChi2(-1),nLayers(-1),nLayers3D(-1),tip(-9999),lip(-9999),highPurity(-999),
     pt(-999.), eta(-999.), phi(-999.), charge(-999), d0_BS(-999.), d0Significance_BS(-999.),
     d0_PV(-999.), d0Significance_PV(-999.), d0Significance_PV_includingPVError(-999.),
     dz_PV(-999.), dzsignificance_PV(-999), d03D_PV(-999), d03DSignificance_PV_includingPVError(-999),
@@ -18,15 +20,17 @@ struct TreeLepton
     vx(-999.), vy(-999.), vz(-999.),
     genIndex(-999), genPdgId(0), genPt(-999), genVertexX(-999), genVertexY(-999), genVertexZ(-999), genPhi(-999), genEta(-999), genTheta(-999), genD0(-999),
     genSignalOriginPdgId(0), genSignalOriginCtau(0), genSignalOriginLxy(0),
-    dtStationsWithValidHits(-999), cscStationsWithValidHits(-999), dtStationsWithAnyHits(-999), cscStationsWithAnyHits(-999), muonStationsWithAnyHits(-999),
+    dtStationsWithValidHits(-999), cscStationsWithValidHits(-999), dtStationsWithAnyHits(-999), cscStationsWithAnyHits(-999), muonStationsWithAnyHits(-999), numberOfHits(-999), numberOfValidHits(-999), numberOfValidMuonCSCHits(-999), numberOfValidMuonDTHits(-999), numberOfValidMuonHits(-999), numberOfLostHits(-999), numberOfLostMuonCSCHits(-999), numberOfLostMuonDTHits(-999), numberOfLostMuonHits(-999),
     minMatchedDeltaR_1(10000), minMatchedDeltaR_2(10000), minMatchedDeltaR_3(10000), minMatchedDeltaR_4(10000), minMatchedDeltaR_5(10000),
     minMatchedDeltaR_10(10000), minMatchedDeltaR_15(10000), minMatchedDeltaR_20(10000), minMatchedDeltaR_26(10000),
     minMatchedGBDeltaR_1(10000), minMatchedGBDeltaR_2(10000), minMatchedGBDeltaR_3(10000), minMatchedGBDeltaR_4(10000), minMatchedGBDeltaR_5(10000),
-    minMatchedGBDeltaR_10(10000), minMatchedGBDeltaR_15(10000), minMatchedGBDeltaR_20(10000), minMatchedGBDeltaR_26(10000)
+    minMatchedGBDeltaR_10(10000), minMatchedGBDeltaR_15(10000), minMatchedGBDeltaR_20(10000), minMatchedGBDeltaR_26(10000),
+    emMax(-999), ecal_time(-999), hadMax(-999), hcal_time(-999), emErr(-999), hadErr(-999),
+    minDxIn(1000), minDyIn(1000), minDxOut(1000), minDyOut(1000), minDzIn(1000), minDzOut(1000)
   {}
 
   // Is track valid?
-  Int_t validTrack;
+  bool validTrack;
   Int_t algo; // Which tracking iteration reco'd this track
   Float_t trackChi2;
   Int_t nLayers;
@@ -124,14 +128,23 @@ struct TreeLepton
   Float_t genSignalOriginCtau;
   Float_t genSignalOriginLxy;
 
-//Extra parameters for SA Muon Analysis
-//Added by Melih (Feb 11, 2014 Fermilab)
+  //Extra parameters for SA Muon Analysis
+  //Added by Melih (Feb 11, 2014 Fermilab)
 
   Int_t dtStationsWithValidHits;
   Int_t cscStationsWithValidHits;
   Int_t dtStationsWithAnyHits;
   Int_t cscStationsWithAnyHits;
   Int_t muonStationsWithAnyHits;
+  Int_t numberOfHits;
+  Int_t numberOfValidHits;
+  Int_t numberOfValidMuonCSCHits;
+  Int_t numberOfValidMuonDTHits;
+  Int_t numberOfValidMuonHits;
+  Int_t numberOfLostHits;
+  Int_t numberOfLostMuonCSCHits;
+  Int_t numberOfLostMuonDTHits;
+  Int_t numberOfLostMuonHits;
 
   float minMatchedDeltaR_1;
   float minMatchedDeltaR_2;
@@ -152,6 +165,29 @@ struct TreeLepton
   float minMatchedGBDeltaR_15;
   float minMatchedGBDeltaR_20;
   float minMatchedGBDeltaR_26;
+
+  // Timing information
+  // Taken from DataFormats/MuonReco/interface/MuonTimeExtra.h
+
+  MuonTime muonTime, muonTimeC, muonTimeDT, muonTimeCSC;
+
+  // ECAL and HCAL timing
+  float emMax;
+  float ecal_time;
+  float ecal_timeErr;
+  float hadMax;
+  float hcal_time;
+  float hcal_timeErr;
+  float emErr;
+  float hadErr;
+ 
+//Additional RSA-SA Matching Parameters...
+  float minDxIn;
+  float minDyIn;
+  float minDxOut;
+  float minDyOut;
+  float minDzIn;
+  float minDzOut;
 
   ClassDef(TreeLepton, 1)
 };

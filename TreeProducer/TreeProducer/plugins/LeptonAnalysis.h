@@ -62,6 +62,13 @@ class LeptonAnalysis : public edm::EDAnalyzer {
   void endLuminosityBlock(const edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
   virtual void endJob() ;
 
+  void fillMuonTime(MuonTime & time, const int nDof,
+		    const float & timeAtIpInOut, const float & timeAtIpInOutErr,
+		    const float & timeAtIpOutIn, const float & timeAtIpOutInErr);
+  void fillMuonTime(MuonTime & time, const reco::MuonTime & mt);
+
+  void fillMuonTime(MuonTime & time, const reco::MuonTimeExtra & mt);
+
   // decay channels
   typedef enum { __lepTypeElectron,
     __lepTypeMuon,
@@ -296,6 +303,8 @@ class LeptonAnalysis : public edm::EDAnalyzer {
   edm::InputTag barrelSuperClusters_;
   edm::InputTag endcapSuperClusters_;
   edm::InputTag photons_;
+  edm::InputTag recoMuonTag_;
+  edm::InputTag timeTags_;
 
   // analysis setup
   std::vector<int> signalPDGId_;
@@ -352,4 +361,9 @@ class LeptonAnalysis : public edm::EDAnalyzer {
   bool inBadRunRange();
   const SteppingHelixPropagator * steppingHelixPropAny_;
   const SteppingHelixPropagator * steppingHelixPropAlong_;
+
+  edm::Handle<reco::MuonCollection> recoMuons;
+  edm::Handle<reco::MuonTimeExtraMap> timeMap1;
+  edm::Handle<reco::MuonTimeExtraMap> timeMap2;
+  edm::Handle<reco::MuonTimeExtraMap> timeMap3;
 };

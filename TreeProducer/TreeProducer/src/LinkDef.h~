@@ -6,7 +6,6 @@
 #include "TreeProducer/TreeProducer/interface/TreeDipseudoLeptonCandidate.h"
 #include "TreeProducer/TreeProducer/interface/TreePhoton.h"
 #include "TreeProducer/TreeProducer/interface/TreeDiphotonCandidate.h"
-#include "TreeProducer/TreeProducer/interface/MuonTime.h"
 
 #ifdef __CINT__
 #pragma link off all globals;
@@ -15,7 +14,7 @@
 #pragma link C++ class Candidates+;
 // #pragma link C++ class std::vector<std::string>+;
 #pragma link C++ class TreeLepton+;
-#pragma link C++ class MuonTime+;
+#pragma link C++ class TreeLepton::MuonTime+;
 #pragma link C++ class TreeDipseudoLeptonCandidate+;
 #pragma link C++ class TreePhoton+;
 #pragma link C++ class TreeDiphotonCandidate+;

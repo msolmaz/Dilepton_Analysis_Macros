@@ -32,6 +32,7 @@ analyzeLeptons = cms.EDAnalyzer("LeptonAnalysis",
   # loose selection cuts
   # leptonSinglePtCut = cms.double(0),
   leptonPtCut = cms.double(25.),
+  leptonRSAPtCut = cms.double(0.),
   leptonSCEtCut = cms.double(10),
 
   UseMCTruth = cms.bool(True),

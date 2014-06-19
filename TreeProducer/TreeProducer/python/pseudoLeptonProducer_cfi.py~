@@ -4,6 +4,8 @@ pseudoLeptonProducer = cms.EDProducer("PseudoLeptonProducer",
                                       trackSrc = cms.InputTag("trackSel"),
                                       muonSrc = cms.InputTag("refittedStandAloneMuons"),
                                       patMuonSrc = cms.InputTag("selectedPatMuons"),
-                                      minPt = cms.double(8),
+                                      recoMuonSrc = cms.InputTag("muons"),
+                                      timeExtraSrc = cms.InputTag("muons"),
+                                      minPt = cms.double(0),
                                       useStandAloneMuons = cms.bool(True))
 

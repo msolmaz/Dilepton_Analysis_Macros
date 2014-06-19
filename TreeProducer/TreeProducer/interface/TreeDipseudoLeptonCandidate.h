@@ -24,7 +24,7 @@ struct TreeDipseudoLeptonCandidate
     dPhi(-999.), dPhiCorr(-999.), dPhiCorrSigned(-999.), dPhiCaloCorr(-999.), hitsBeforeVertexL(-999.), hitsBeforeVertexH(-999.),
     missedLayersAfterVertexL(-999.), missedLayersAfterVertexH(-999.),
     originPdgIdL(-999), originPdgIdH(-999), pdgIdL(-999), pdgIdH(-999), genctau(-999.), genDecayLength2D(-999.), genDecayLength3D(-999.),
-    validVertex(-999), vertexChi2(-999.), vx(-999.), vy(-999.), vz(-999.)
+    validVertex(false), vertexChi2(-999.), vx(-999.), vy(-999.), vz(-999.)
   {}
 
   // Single lepton variables
@@ -155,7 +155,7 @@ struct TreeDipseudoLeptonCandidate
   Float_t genDecayLength3D;
 
   // Vertex position and quality
-  Int_t validVertex;
+  bool validVertex;
   Float_t vertexChi2;
   Float_t vx;
   Float_t vy;

@@ -51,32 +51,34 @@ void LeptonAnalysis::endLuminosityBlock(const edm::LuminosityBlock & lumi, const
 }
 
 LeptonAnalysis::LeptonAnalysis(const edm::ParameterSet& iConfig):
-                                      checkHitPattern_(),
-                                      generatorTag_(iConfig.getParameter<edm::InputTag>("generatorSrc")),
-                                      pileupTag_(edm::InputTag("addPileupInfo")),
-                                      genEventInfoTag_(edm::InputTag("generator")),
-                                      trigger_(iConfig.getParameter<edm::InputTag>("trigger")),
-                                      triggerEvent_(iConfig.getParameter<edm::InputTag>("triggerEvent")),
-                                      barrelSuperClusters_(iConfig.getParameter<edm::InputTag>("barrelSuperClusters")),
-                                      endcapSuperClusters_(iConfig.getParameter<edm::InputTag>("endcapSuperClusters")),
-                                      photons_(iConfig.getParameter<edm::InputTag>("photons")),
-                                      signalPDGId_(iConfig.getParameter<std::vector<int>>("signalPDGId")),
-                                      leptonPDGId_(iConfig.getParameter<int>("leptonPDGId")),
-                                      hltPaths_(iConfig.getParameter<std::vector<std::string> >("hltPaths")),
-                                      leptonPtCut_(iConfig.getParameter<double>("leptonPtCut")),
-                                      leptonRSAPtCut_(iConfig.getParameter<double>("leptonRSAPtCut")),
-                                      leptonSCEtCut_(iConfig.getParameter<double>("leptonSCEtCut")),
-                                      useMCTruth_(iConfig.getParameter<bool>("UseMCTruth")),
-                                      isData_(iConfig.getParameter<bool>("isData")),
-                                      numProcessedEvents_(0),
-                                      numEventsPassingEventFilters_(0),
-                                      numEventsPassingTrigger_(0),
-                                      numEventsPassingPreFilter_(0),
-                                      // tiplipCorrectionFile_(iConfig.getParameter<edm::FileInPath>("tiplipCorrectionFile")),
-                                      badRangeMin_(iConfig.getParameter<int>("badRangeMin")),
-                                      badRangeMax_(iConfig.getParameter<int>("badRangeMax")),
-				      steppingHelixPropAny_(0),
-				      steppingHelixPropAlong_(0)
+  checkHitPattern_(),
+  generatorTag_(iConfig.getParameter<edm::InputTag>("generatorSrc")),
+  pileupTag_(edm::InputTag("addPileupInfo")),
+  genEventInfoTag_(edm::InputTag("generator")),
+  trigger_(iConfig.getParameter<edm::InputTag>("trigger")),
+  triggerEvent_(iConfig.getParameter<edm::InputTag>("triggerEvent")),
+  barrelSuperClusters_(iConfig.getParameter<edm::InputTag>("barrelSuperClusters")),
+  endcapSuperClusters_(iConfig.getParameter<edm::InputTag>("endcapSuperClusters")),
+  photons_(iConfig.getParameter<edm::InputTag>("photons")),
+  recoMuonTag_(iConfig.getParameter<edm::InputTag>("recoMuonSrc")),
+  timeTags_(iConfig.getParameter<edm::InputTag>("timeExtraSrc")),
+  signalPDGId_(iConfig.getParameter<std::vector<int>>("signalPDGId")),
+  leptonPDGId_(iConfig.getParameter<int>("leptonPDGId")),
+  hltPaths_(iConfig.getParameter<std::vector<std::string> >("hltPaths")),
+  leptonPtCut_(iConfig.getParameter<double>("leptonPtCut")),
+  leptonRSAPtCut_(iConfig.getParameter<double>("leptonRSAPtCut")),
+  leptonSCEtCut_(iConfig.getParameter<double>("leptonSCEtCut")),
+  useMCTruth_(iConfig.getParameter<bool>("UseMCTruth")),
+  isData_(iConfig.getParameter<bool>("isData")),
+  numProcessedEvents_(0),
+  numEventsPassingEventFilters_(0),
+  numEventsPassingTrigger_(0),
+  numEventsPassingPreFilter_(0),
+  // tiplipCorrectionFile_(iConfig.getParameter<edm::FileInPath>("tiplipCorrectionFile")),
+  badRangeMin_(iConfig.getParameter<int>("badRangeMin")),
+  badRangeMax_(iConfig.getParameter<int>("badRangeMax")),
+  steppingHelixPropAny_(0),
+  steppingHelixPropAlong_(0)
 {
   if (leptonPDGId_==11) {
     thisLepton_=__lepTypeElectron;
@@ -124,15 +126,6 @@ LeptonAnalysis::LeptonAnalysis(const edm::ParameterSet& iConfig):
   hEventsPassingEventsFilter_ = new TH1F("eventsPassingEventFilters", "Events passing event filters", 1, 0, 1);
   hEventsPassingTrigger_ = new TH1F("eventsPassingTrigger", "Events passing trigger selection", 1, 0, 1);
   hEventsPassingPreFilter_ = new TH1F("eventsPassingPreFilter", "Events passing prefilter selection", 1, 0, 1);
-
-  // Get tip and lip corrections
-  // tiplipTfile_ = new TFile(tiplipCorrectionFile_.fullPath().c_str(),"READ");
-  // Get histogram
-  // tiplipTfile_->GetObject("singleLeptonZ0_vs_phi_vs_theta_noVertex",z0Corrections_);
-  // tiplipTfile_->GetObject("singleLeptonZ0_vs_phi_vs_theta_badRun_noVertex",z0Corrections_badRunRange_);
-  // tiplipTfile_->GetObject("singleLeptonD0_vs_phi_vs_theta_noVertex",d0Corrections_);
-  // tiplipTfile_->GetObject("singleLeptonD0_vs_phi_vs_theta_badRun_noVertex",d0Corrections_badRunRange_);
-  // tiplipTfile_->Close();
 }
 
 LeptonAnalysis::~LeptonAnalysis()
@@ -142,6 +135,8 @@ LeptonAnalysis::~LeptonAnalysis()
 
 void LeptonAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
+  std::cout << "starting the analyze" << std::endl;
+
   // event setup
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",trackBuilder_);
   //  if (checkHitPattern_==NULL) checkHitPattern_ = new CheckHitPattern();
@@ -156,6 +151,14 @@ void LeptonAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   steppingHelixPropAlong_ = dynamic_cast<const SteppingHelixPropagator*>(&*muonPropagatorAlongHandle);
   // }
 
+  // Take the reco::muons and timeExtra to match and extract timing of RSA
+  iEvent.getByLabel(recoMuonTag_,recoMuons);
+  // Load timing information
+  iEvent.getByLabel(timeTags_.label(),"combined",timeMap1);
+  iEvent.getByLabel(timeTags_.label(),"dt",timeMap2);
+  iEvent.getByLabel(timeTags_.label(),"csc",timeMap3);
+
+  std::cout << "loaded time tags" << std::endl;
 
   // look at trigger information, this fills the vars_.triggers vector of strings
   bool passesTrigger = doTrigger(iEvent);
@@ -220,7 +223,6 @@ void LeptonAnalysis::fillEventBasedInfo(const edm::Event& iEvent, const edm::Eve
     //    std::cout << "No pat MET collection found in input file" << std::endl;
   }
 
-
   // Get reco primary vertex info
   edm::Handle<reco::VertexCollection> primaryVertexHandle_;
   iEvent.getByLabel ("offlinePrimaryVerticesWithBS", primaryVertexHandle_);
@@ -265,7 +267,6 @@ void LeptonAnalysis::fillEventBasedInfo(const edm::Event& iEvent, const edm::Eve
   // such as PDF, pile-up vertices,
   // decay channels and lifetimes of long-lived particles etc
   if( useMCTruth_ ) {
-    //    std::cout << "Getting MC truth info" << std::endl;
     GenEventProperties genProp(iEvent,iSetup,signalPDGId_,generatorTag_,
         pileupTag_,genEventInfoTag_);
 
@@ -330,43 +331,13 @@ void LeptonAnalysis::fillEventBasedInfo(const edm::Event& iEvent, const edm::Eve
           candidates_.ll2_daughter2_Z0=genProp.daughterZ0(3);
         }
       }
-
-      //      if ( fabs(candidates_.ll1_daughterPdgId) == 13 || fabs(candidates_.ll2_daughterPdgId) == 13 ) {
-      //        std::cout << "Mother 1" << std::endl;
-      //        std::cout << "Pdg id : " << candidates_.ll1_motherPdgId << std::endl;
-      //        std::cout << "Daughter pdg id : " << candidates_.ll1_daughterPdgId << std::endl;
-      //        std::cout << "Daughter pts : " << candidates_.ll1_daughter1_Pt << " " << candidates_.ll1_daughter2_Pt << std::endl;
-      //        std::cout << "Daughter etas : " << candidates_.ll1_daughter1_Eta << " " << candidates_.ll1_daughter2_Eta << std::endl;
-      //        std::cout << "Daughter d0s : " << candidates_.ll1_daughter1_D0 << " " << candidates_.ll1_daughter2_D0 << std::endl;
-      //        std::cout << "Mother 2" << std::endl;
-      //        std::cout << "Pdg id : " << candidates_.ll2_motherPdgId << std::endl;
-      //        std::cout << "Daughter pdg id : " << candidates_.ll2_daughterPdgId << std::endl;
-      //        std::cout << "Daughter pts : " << candidates_.ll2_daughter1_Pt << " " << candidates_.ll2_daughter2_Pt << std::endl;
-      //        std::cout << "Daughter etas : " << candidates_.ll2_daughter1_Eta << " " << candidates_.ll2_daughter2_Eta << std::endl;
-      //        std::cout << "Daughter d0s : " << candidates_.ll2_daughter1_D0 << " " << candidates_.ll2_daughter2_D0 << std::endl;
-      //        std::cout << std::endl;
-      //      }
-
     }
-
-    //
-    //
-    //    // long-lived decay properties
-    //    unsigned numDecays_;
-    //    std::vector<int> decayModes_;
-    //    std::vector<double> decayLength2D_;
-    //    std::vector<double> decayLength3D_;
-    //    std::vector<double> ctau_;
-
-    //    int decayMode(unsigned i) { if (i<2) return decayModes_[i]; else return -999; }
-    //    double decayLength2D(unsigned i) { if (i<2) return decayLength2D_[i]; else return -999; }
-    //    double decayLength3D(unsigned i) { if (i<2) return decayLength3D_[i]; else return -999; }
-    //    double ctau(unsigned i) { if (i<2) return ctau_[i]; else return -999; }
   }
 }
 
 void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::EventSetup& iSetup,
-				       const edm::ESHandle<MagneticField> & theMagField, const edm::Handle<edm::View<PseudoLepton> > & particles)
+				       const edm::ESHandle<MagneticField> & theMagField,
+				       const edm::Handle<edm::View<PseudoLepton> > & particles)
 {
   // Load superCluster collections if this is for electrons
   edm::Handle< std::vector<reco::SuperCluster> > barrelSuperClusters;
@@ -403,7 +374,6 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
   iEvent.getByLabel( triggerEvent_, triggerEvent );
   if (triggerEvent.failedToGet()) {
     std::cout << "WARNING: cannot access triggerEvent for matching" << std::endl;
-    //    return;
   }
 
   // SA PAT trigger objects
@@ -415,43 +385,12 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
 
   int lepton_index=0;
 
-  // std::cout << "total number of leptons = " << particles->size() << std::endl;
-
-
   // First loop on pseudoleptons to fill lepton-based information (trigger matches, calo-matches, muon-matches, etc...)
   for( typename edm::View<PseudoLepton>::const_iterator it = particles->begin(); it != particles->end(); ++it ) {
-
-    // if( it->isCentralTrack() ) {
-    //   std::cout << "it->pt() = " << it->pt() << std::endl;
-    // }
-
-    //
-    // APPLY INITIAL CUTS ON PSEDUOLEPTON
-    //
-
-    // std::cout << "particle (lepton) pt = " << it->pt() << std::endl;
-    // if( it->isGlobalMuon() ) {
-    //   std::cout << "globalMuon with pt = " << it->pt() << std::endl;
-    // }
-
-    // Apply cut on track pt
-    // FIXME Bad for electrons. Should cut on SC Et, or at least much looser here
-    // if ( (it->isStandAloneMuon() || it->isGlobalMuon() || it->isTrackerMuon()) ) {
-    // if ( (it->isStandAloneMuon() || it->isGlobalMuon() || it->isTrackerMuon()) ) {
-
-
     if( it->isStandAloneMuon() ) {
       if ( it->pt() < leptonRSAPtCut_ ) continue;
     }
     else if(it->pt() < leptonPtCut_) continue;
-
-
-      // }
-    // else if ( it->pt() < leptonTrackPtCut_ ) continue;
-
-    // if( it->isGlobalMuon() ) {
-    //   std::cout << "globalMuon passing cut with pt = " << it->pt() << std::endl;
-    // }
 
     // If this is the electron channel, only interested in track matched to TO
     // Also cut on matched SC Et in electron channel
@@ -530,17 +469,6 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
         lepton.photonHadTowOverEm = matchedPhoton->hadTowOverEm();
         lepton.photonSigmaIetaIeta = matchedPhoton->sigmaEtaEta();
         lepton.photonR9 = matchedPhoton->r9();
-
-        //        // Calculate sigmaIphiIphi for a supercluster
-        //        // Not available for photons, so take code for electrons from:
-        //        // http://cmslxr.fnal.gov/lxr/source/PhysicsTools/PatAlgos/plugins/PATElectronProducer.cc#387
-        //        EcalClusterLazyTools lazyTools(iEvent, iSetup, edm::InputTag("reducedEcalRecHitsEB"), edm::InputTag("reducedEcalRecHitsEE"));
-        //        std::vector<float> vCov = lazyTools.localCovariances(*( matchedPhoton->superCluster()->seed()));
-        //        double sigmaIphiIphi = -1;
-        //        if( !isnan(vCov[2]) ) sigmaIphiIphi = sqrt(vCov[2]);
-        //        else sigmaIphiIphi = 0;
-        //
-        //        std::cout << "Photon sigmaIphiIphi : " << sigmaIphiIphi << std::endl;
       }
     }
 
@@ -555,7 +483,7 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
 
     // Is track valid?
     if ( tTrack.isValid() ) {
-      lepton.validTrack=1;
+      lepton.validTrack=true;
       lepton.algo = it->algo();
 
       // Pt etc. of track
@@ -578,7 +506,7 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
         // Currently make this track non-valid.
         // Setting d0 and d0significance to -9999 implies that these should fail the cut on d0 significance
         // But we cut on abs(d0 significance) so they may pass?
-        lepton.validTrack=0;
+        lepton.validTrack=false;
       };
 
       lepton.d0_BS = d0;
@@ -604,7 +532,7 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
         dzsignificance=dz/error;
 
       } catch (cms::Exception& e) {
-        lepton.validTrack=0;
+        lepton.validTrack=false;
       }
 
       lepton.d0_PV = d0;
@@ -624,17 +552,10 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
         d03D  = fabs(IPTools::absoluteImpactParameter3D(tTrack, primaryVertex_).second.value());
         d03DSignificance = d03D / fabs(IPTools::absoluteImpactParameter3D(tTrack, primaryVertex_).second.error());
       } catch (cms::Exception& e) {
-        lepton.validTrack=0;
+        lepton.validTrack=false;
       }
 
-      // CHECK
-      // Replace the values from IPTools with the ones from the track
-      // d0 = it->d0();
-      // d0significance = d0/it->d0Error();
-      // CHECK
-
       lepton.d0Significance_PV_includingPVError = d0significance;
-
       lepton.d03D_PV = d03D;
       lepton.d03DSignificance_PV_includingPVError = d03DSignificance;
 
@@ -654,12 +575,30 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
         lepton.dtStationsWithAnyHits = it->hitPattern().dtStationsWithAnyHits();
         lepton.cscStationsWithAnyHits = it->hitPattern().cscStationsWithAnyHits();
         lepton.muonStationsWithAnyHits = it->hitPattern().muonStationsWithAnyHits();
+        lepton.numberOfHits = it->hitPattern().numberOfHits();
+        lepton.numberOfValidHits = it->hitPattern().numberOfValidHits();
+        lepton.numberOfValidMuonCSCHits = it->hitPattern().numberOfValidMuonCSCHits();
+        lepton.numberOfValidMuonDTHits = it->hitPattern().numberOfValidMuonDTHits();
+        lepton.numberOfValidMuonHits = it->hitPattern().numberOfValidMuonHits();
+        lepton.numberOfLostHits = it->hitPattern().numberOfLostHits();
+        lepton.numberOfLostMuonCSCHits = it->hitPattern().numberOfLostMuonCSCHits();
+        lepton.numberOfLostMuonDTHits = it->hitPattern().numberOfLostMuonDTHits();
+        lepton.numberOfLostMuonHits = it->hitPattern().numberOfLostMuonHits();
       } catch (...) {
         lepton.dtStationsWithValidHits = -999;
         lepton.cscStationsWithValidHits = -999;
         lepton.dtStationsWithAnyHits = -999;
         lepton.cscStationsWithAnyHits = -999;
         lepton.muonStationsWithAnyHits = -999;
+        lepton.numberOfHits = -999;
+        lepton.numberOfValidHits = -999;
+        lepton.numberOfValidMuonCSCHits = -999;
+        lepton.numberOfValidMuonDTHits = -999;
+        lepton.numberOfValidMuonHits = -999;
+        lepton.numberOfLostHits = -999;
+        lepton.numberOfLostMuonCSCHits = -999;
+        lepton.numberOfLostMuonDTHits = -999;
+        lepton.numberOfLostMuonHits = -999;
       }
 
       // Quality cuts
@@ -676,8 +615,6 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
 
       // Gen info for this lepton
       if ( useMCTruth_ && MCTruthFound ) {
-
-
 	// Extrapolate the track
 	FreeTrajectoryState fts(GlobalPoint(it->vx(),it->vy(),it->vz()),
 				GlobalVector(it->px(),it->py(),it->pz()),
@@ -685,33 +622,14 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
 				0);//theMagField.product());
 	FreeTrajectoryState ftsPCA(steppingHelixPropAny_->propagate(fts, beamSpot_));
 
-	// std::cout << "from lepton      :            "
-	// 	  << "pt =  " << it->pt() << ", "
-	// 	  << "eta = " << it->eta() << ", "
-	// 	  << "phi = " << it->phi() << ", "
-	// 	  << std::endl;
-	// 
-	// std::cout << "from steppingHelixPropagator: "
-	// 	  << "pt =  " << ftsPCA.momentum().perp() << ", "
-	// 	  << "eta = " << ftsPCA.momentum().eta() << ", "
-	// 	  << "phi = " << ftsPCA.momentum().phi() << ", "
-	// 	  << std::endl << std::endl;
-
-
-
         // Find closest stable (status == 1) genParticle by deltaR (correct for DV)
-        // int genIndex = getGenParticleMatch( mcParticles, *it, iSetup );
         int genIndex = getGenParticleMatch( mcParticles, ftsPCA, iSetup );
-
 
         if (genIndex>=0) {
           const reco::GenParticle matchedGenParticle = mcParticles->at(genIndex);
 
           // Get gen particle at point closest to beamline
           // This can then be compared to tracks
-          // TrajectoryStateClosestToBeamLine tsAtClosestApproach = getGenParticleStateClosestToBeamline( iSetup, matchedGenParticle);
-          // GlobalVector p = tsAtClosestApproach.trackStateAtPCA().momentum();
-          // GlobalPoint v = tsAtClosestApproach.trackStateAtPCA().position();
           FreeTrajectoryState tsAtClosestApproach = getGenParticleStateClosestToBeamline( iSetup, matchedGenParticle);
           GlobalVector p = tsAtClosestApproach.momentum();
           GlobalPoint v = tsAtClosestApproach.position();
@@ -735,64 +653,19 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
             GenEventProperties::DecayLengthAndType dlt(GenEventProperties::getDecayLengthAndType(*origin));
             lepton.genSignalOriginCtau = dlt.ctau;
             lepton.genSignalOriginLxy = dlt.decayLength2D;
-
-            //            for ( int iDau=0;iDau<2;++iDau) {
-            //              std::cout << "++++" << std::endl;
-            //              std::cout << "Daughter status : " << dlt.daughters[iDau]->status() << std::endl;
-            //              std::cout << "Daughter pt : " << dlt.daughters[iDau]->pt() << std::endl;
-            //              std::cout << "Daughter eta, phi : " << dlt.daughters[iDau]->eta() << ", " << dlt.daughters[iDau]->phi() << std::endl;
-            //            }
           }
           else lepton.genSignalOriginPdgId = 0;
-
-          //          if ( fabs(candidates_.ll1_daughterPdgId) == 13 || fabs(candidates_.ll2_daughterPdgId) == 13 ) {
-          //
-          //            std::cout << "Gen pdg : " << lepton.genPdgId << std::endl;
-          //            std::cout << "Gen pt : " << lepton.genPt << std::endl;
-          //            std::cout << "Gen eta : " << lepton.genEta << std::endl;
-          //            std::cout << "Gen d0 : " << lepton.genD0 << std::endl << std::endl;
-          //
-          //          }
-          //          if ( lepton.genSignalOriginPdgId > 6001110 && matchedGenParticle.pdgId() > 10 && matchedGenParticle.pdgId() < 15 ) {
-          //            std::cout << "Origin pdgid : " << lepton.genSignalOriginPdgId << std::endl;
-          //            std::cout << "Gen lepton pdgid : " << matchedGenParticle.pdgId() << std::endl;
-          //            std::cout << "Track pt : " << lepton.pt << std::endl;
-          //            std::cout << "Matched SC ? : " << lepton.hasCaloMatch << std::endl;
-          //            std::cout << "SC Et : " << lepton.scEt << std::endl;
-          //            std::cout << "SC energy : " << lepton.scEnergy << std::endl;
-          //            std::cout << "Matched photon ? : " << lepton.hasPhotonMatch << std::endl;
-          //            std::cout << "Photon Et : " << lepton.photonEt << std::endl;
-          //            std::cout << "Photon SC energy : " << lepton.photonSCEnergy << std::endl;
-          //            if ( !(lepton.hasCaloMatch && lepton.hasPhotonMatch) ) std::cout << "----------> MATCH ONE ONLY" << std::endl;
-          //            if ( !lepton.sameSCAsMatched ) std::cout << "---------------> DIFFERENT SC" << std::endl;
-          //            std::cout << std::endl;
-          //          }
-
-          //          if ( lepton.genSignalOriginPdgId == 60003113 ) {
-          //            std::cout << "Pseudolepton pt, eta, phi : " << lepton.pt << ", " << lepton.eta << ", " << lepton.phi << std::endl;
-          //            std::cout << "Matched gen particle pdgid : " << matchedGenParticle.pdgId() << std::endl;
-          //            std::cout << "Origin pdgid : " << lepton.genSignalOriginPdgId << std::endl;
-          //            std::cout << "Matched gen particle pt, eta, phi : " << matchedGenParticle.pt() << ", "
-          //                      << matchedGenParticle.eta() << ", " << matchedGenParticle.phi() << std::endl;
-          //            std::cout << std::endl;
-          //          }
         }
       }
 
       // Trigger matching
-      // FIXME Currently using old method
       double deltaR=999;
-      //    double deltaR_OLD=999;
 
       int matchedTOIndex = findTrigMatch_OLD(*it, triggerEvent,deltaR,saTriggerObjects);
       if ( matchedTOIndex != 0 ) {
         lepton.triggerMatch = 1;
         lepton.triggerObjectIndex = matchedTOIndex;
         lepton.tmDeltaR=deltaR;
-
-        // Check old trigger matching method
-        //      findTrigMatch_OLD(*it, triggerEvent,deltaR_OLD);
-        //      lepton.tmDeltaR_OLD=deltaR_OLD;
       }
       else lepton.triggerMatch=0;
 
@@ -800,25 +673,157 @@ void LeptonAnalysis::fillPseudoLeptons(const edm::Event& iEvent, const edm::Even
       lepton.vx = it->vx();
       lepton.vy = it->vy();
       lepton.vz = it->vz();
+
+      // Add muon timing information
+      // ---------------------------
+      if (leptonName_=="mutrack" || leptonName_=="muon") {
+	if( !lepton.isStandAloneMuon ) continue;
+
+	// std::cout << "getting the timing" << std::endl;
+
+
+        // Match the RSA to the SA. This is needed because RSA are not in the reco::Muon and we need
+        // to access timing information from the reco::Muon. The RSA is a refit of the SA, the timing
+        // of the hits is the same (but do not use anything with IP or beamspot constraint).
+        // Analyze the short info stored directly in reco::Muon
+        const math::XYZPoint & rsaInnerPoint(it->innerPosition());
+        const math::XYZPoint & rsaOuterPoint(it->outerPosition());
+
+        float minDxIn = 1000.;
+        float minDyIn = 1000.;
+        float minDzIn = 1000.;
+        float minDxOut = 1000.;
+        float minDyOut = 1000.;
+        float minDzOut = 1000.;
+        int imucount = 0;
+
+        // Loop over the standAloneMuons and take the one with the closest inner and outer position.
+        // Only save the timing if the matching is close enough (<5cm in x,y and <50cm in z).
+        const reco::Muon * matchedSA = 0;
+        int imucountMatch = -1;
+        for (reco::MuonCollection::const_iterator sa=recoMuons->begin(); sa!=recoMuons->end(); ++sa, ++imucount) {
+          if( sa->isStandAloneMuon() ) {
+
+            // std::cout << "pseudoLeptonProducer: filling timing information" << std::endl;
+
+            const math::XYZPoint & saInnerPoint(sa->standAloneMuon()->innerPosition());
+            const math::XYZPoint & saOuterPoint(sa->standAloneMuon()->outerPosition());
+            if( fabs(saInnerPoint.x() - rsaInnerPoint.x()) < minDxIn &&
+                fabs(saInnerPoint.y() - rsaInnerPoint.y()) < minDyIn &&
+                fabs(saOuterPoint.x() - rsaOuterPoint.x()) < minDxOut &&
+                fabs(saOuterPoint.y() - rsaOuterPoint.y()) < minDyOut ) {
+              minDxIn = fabs(saInnerPoint.x() - rsaInnerPoint.x());
+              minDyIn = fabs(saInnerPoint.y() - rsaInnerPoint.y());
+              minDzIn = fabs(saInnerPoint.z() - rsaInnerPoint.z());
+              minDxOut = fabs(saOuterPoint.x() - rsaOuterPoint.x());
+              minDyOut = fabs(saOuterPoint.y() - rsaOuterPoint.y());
+              minDzOut = fabs(saOuterPoint.z() - rsaOuterPoint.z());
+
+              // Check for good matching and fill timing information
+              if( minDxIn > 5 || minDyIn > 5 || minDxOut > 5 || minDyOut > 5 || minDzIn > 50 || minDzOut > 50 ) continue;
+
+              matchedSA = &*sa;
+              imucountMatch = imucount;
+            }
+          }
+        }
+// Save the closest match
+        lepton.minDxIn = minDxIn;
+        lepton.minDyIn = minDyIn;
+        lepton.minDzIn = minDzIn;
+        lepton.minDxOut = minDxOut;
+        lepton.minDyOut = minDyOut;
+        lepton.minDzOut = minDzOut;
+
+        if( matchedSA != 0 && imucountMatch != -1 ) {
+          if (matchedSA->isTimeValid()) {
+            // std::cout << "pseudoLeptonProducer: time is valid for muon pt = " << it->pt() << std::endl;
+            fillMuonTime(lepton.muonTime, matchedSA->time());
+          }
+	  // Save the MuonTimeExtra information
+          reco::MuonRef muonR(recoMuons,imucountMatch);
+
+          // std::cout << "filling timing: for muon pt = " << lepton.pt << ", nDof = " << matchedSA->time().nDof << std::endl;
+          // std::cout << "rsa inner position = " << rsaInnerPoint << ", outer position = " << rsaOuterPoint << std::endl;
+          // std::cout << "sa inner position =  " << matchedSA->standAloneMuon()->innerPosition() << ", outer position = " << matchedSA->standAloneMuon()->outerPosition() << std::endl;
+
+          const reco::MuonTimeExtraMap & timeMapCmb = *timeMap1;
+          const reco::MuonTimeExtraMap & timeMapDT = *timeMap2;
+          const reco::MuonTimeExtraMap & timeMapCSC = *timeMap3;
+          fillMuonTime(lepton.muonTimeC, timeMapCmb[muonR]);
+          fillMuonTime(lepton.muonTimeDT, timeMapDT[muonR]);
+          fillMuonTime(lepton.muonTimeCSC, timeMapCSC[muonR]);
+
+          if( matchedSA->isEnergyValid() ) {
+            const reco::MuonEnergy & muonEnergy = matchedSA->calEnergy();
+            lepton.emMax = muonEnergy.emMax;
+            lepton.ecal_time = muonEnergy.ecal_time;
+
+            // std::cout << "ecal_time = " << lepton.ecal_time << std::endl;
+
+            lepton.ecal_timeErr = muonEnergy.ecal_timeError;
+            lepton.hadMax = muonEnergy.hadMax;
+            lepton.hcal_time = muonEnergy.hcal_time;
+            lepton.hcal_timeErr = muonEnergy.hcal_timeError;
+            // From the MuonTimingValidator
+            lepton.emErr = 1.5/muonEnergy.emMax;
+            // From the MuonTimingValidator
+            lepton.hadErr = 1.; // DUMMY !!
+          }
+        }
+      }
     }
-    else lepton.validTrack=0;
+    else lepton.validTrack=false;
   }
 
-  // findMatchedMuons(theMagField, particles);
+  // The loop on the leptons is done, now find track matches.
   findMatchedMuons(iSetup, particles);
 }
 
 
-// void LeptonAnalysis::findMatchedMuons(const edm::ESHandle<MagneticField> & theMagField, const edm::Handle<edm::View<PseudoLepton> > & particles)
+void LeptonAnalysis::fillMuonTime(MuonTime & time, const int nDof,
+                                  const float & timeAtIpInOut, const float & timeAtIpInOutErr,
+                                  const float & timeAtIpOutIn, const float & timeAtIpOutInErr)
+{
+  // number of muon stations used
+  time.nDof = nDof;
+
+  // std::cout << "nDof = " << nDof << std::endl;
+
+  // time of arrival at the IP for the Beta=1 hypothesis
+  //  a) particle is moving from inside out
+  time.timeAtIpInOut = timeAtIpInOut;
+  time.timeAtIpInOutErr = timeAtIpInOutErr;
+  //  b) particle is moving from outside in
+  time.timeAtIpOutIn = timeAtIpOutIn;
+  time.timeAtIpOutInErr = timeAtIpOutInErr;
+}
+
+
+void LeptonAnalysis::fillMuonTime(MuonTime & time, const reco::MuonTime & mt)
+{
+  fillMuonTime(time, mt.nDof, mt.timeAtIpInOut, mt.timeAtIpInOutErr, mt.timeAtIpOutIn, mt.timeAtIpOutInErr);
+}
+
+
+void LeptonAnalysis::fillMuonTime(MuonTime & time, const reco::MuonTimeExtra & mt)
+{
+  fillMuonTime(time, mt.nDof(), mt.timeAtIpInOut(), mt.timeAtIpInOutErr(), mt.timeAtIpOutIn(), mt.timeAtIpOutInErr());
+  // 1/beta for prompt particle hypothesis
+  time.inverseBeta = mt.inverseBeta();
+  time.inverseBetaErr = mt.inverseBetaErr();
+  // unconstrained 1/beta (time is free)
+  time.freeInverseBeta = mt.freeInverseBeta();
+  time.freeInverseBetaErr = mt.freeInverseBetaErr();
+}
+
+
 void LeptonAnalysis::findMatchedMuons(const edm::EventSetup& iSetup, const edm::Handle<edm::View<PseudoLepton> > & particles)
 {
   for( std::vector<TreeLepton>::iterator rsa = candidates_.leptons_.begin(); rsa != candidates_.leptons_.end(); ++rsa ) {
     if( rsa->isStandAloneMuon ) {
       PseudoLepton rsaLepton = particles->at(rsa->pseudoLeptonIndex);
       GlobalPoint position( rsaLepton.innerPosition().x(), rsaLepton.innerPosition().y(), rsaLepton.innerPosition().z() );
-      // int indexMinDR = -999;
-
-      // std::cout << "rsa pt = " << rsa->pt << std::endl;
 
       float minDR_1 = 10000.;
       float minDR_2 = 10000.;
@@ -840,61 +845,15 @@ void LeptonAnalysis::findMatchedMuons(const edm::EventSetup& iSetup, const edm::
       float minGBDR_20 = 10000.;
       float minGBDR_26 = 10000.;
 
-      // int index = 0;
-      // for( std::vector<TreeLepton>::const_iterator tk = candidates_.leptons_.begin(); tk != candidates_.leptons_.end(); ++tk, ++index ) {
-
-
       for( typename edm::View<PseudoLepton>::const_iterator tk = particles->begin(); tk != particles->end(); ++tk ) {
-
-
-	// if( tk->isGlobalMuon || tk->isCentralTrack ) {
-	// if( tk->isGlobalMuon ) {
-	//   std::cout << "rsa inner position: " << rsaLepton.outerPosition() << std::endl;
-	//   PseudoLepton tkLepton = particles->at(tk->pseudoLeptonIndex);
-	//   std::cout << "sa inner position: " << tkLepton.outerPosition() << std::endl;
-	// }
-
-	// if( tk->isGlobalMuon ) {
-// 	  PseudoLepton tkLepton = particles->at(tk->pseudoLeptonIndex);
-// 	  std::cout << "v(x,y,z) = " << tkLepton.vx() <<","<< tkLepton.vy() <<","<< tkLepton.vz() << std::endl;
-// 	  std::cout << "p(x,y,z) = " << tkLepton.px() <<","<< tkLepton.py() <<","<< tkLepton.pz() << std::endl;
-// 	  std::cout << "charge = " << tkLepton.charge() << std::endl;
-
-
-
-
-// // 	  FreeTrajectoryState fts(GlobalPoint(tkLepton.vx(), tkLepton.vy(), tkLepton.vz()),
-// // 				  GlobalVector(tkLepton.px(), tkLepton.py(), tkLepton.pz()),
-// // 				  tkLepton.charge(),
-// // 				  theMagField.product());
-// // 	  std::cout << "theMagField = " << theMagField.product() << std::endl;
-// // 	  std::cout << "after fts" << std::endl;
-// // 	  FreeTrajectoryState ftsPCA(steppingHelixProp_->propagate(fts, position));
-// // 	  std::cout << "after ftsPCA" << std::endl;
-// // 	  float dR = deltaR(ftsPCA.momentum().eta(), ftsPCA.momentum().phi(), rsaLepton.innerMomentum().eta(), rsaLepton.innerMomentum().phi());
-// // 	  /// return deltaR(ftsPCA.momentum().eta(), ftsPCA.momentum().phi(), rsa.innerMomentum().eta(), rsa.innerMomentum().phi());
-// // 	  std::cout << "extrapolation failed for lepton with pt = " << tkLepton.pt() << std::endl;
-
-// 	  // float dR = 10000.;
-// 	  float dR = extrapolateToMuon(tkLepton, rsaLepton, position, theMagField);
-// 	  if( minDR > dR ) {
-// 	    indexMinDR = index;
-// 	    minDR = dR;
-// 	  }
-// 	}
-
 	// Get the magnetic field
 	edm::ESHandle<MagneticField> theInMagField;
 	// iSetup.get<IdealMagneticFieldRecord>().get(theInMagField);
 
-
 	if( tk->isCentralTrack() ) {
 	  // PseudoLepton tkLepton = particles->at(tk->pseudoLeptonIndex);
-	  // if( tk->isCentralTrack ) std::cout << "tk->pt = " << tk->pt << std::endl;
-	  // float dR = extrapolateToMuon(tkLepton, rsaLepton, position, theInMagField);
 	  float dR = extrapolateToMuon(*tk, rsaLepton, position, theInMagField);
 	  // to avoid nan. nan is different from any number, even itself, by the IEEE standard.
-	  // if( dR == dR ) std::cout << "dR = " << dR << std::endl;
 	  if( dR == dR ) {
 	    if( tk->pt() > 1. && minDR_1 > dR ) minDR_1 = dR;
 	    if( tk->pt() > 2. && minDR_2 > dR ) minDR_2 = dR;
@@ -922,9 +881,7 @@ void LeptonAnalysis::findMatchedMuons(const edm::EventSetup& iSetup, const edm::
 	    if( tk->pt() > 26. && minGBDR_26 > dR ) minGBDR_26 = dR;
 	  }
 	}
-
       }
-      // std::cout << "track match minDR = " << minDR << std::endl;
       rsa->minMatchedDeltaR_1 = minDR_1;
       rsa->minMatchedDeltaR_2 = minDR_2;
       rsa->minMatchedDeltaR_3 = minDR_3;
@@ -934,15 +891,6 @@ void LeptonAnalysis::findMatchedMuons(const edm::EventSetup& iSetup, const edm::
       rsa->minMatchedDeltaR_15 = minDR_15;
       rsa->minMatchedDeltaR_20 = minDR_20;
       rsa->minMatchedDeltaR_26 = minDR_26;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_1 = " << minDR_1 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_2 = " << minDR_2 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_3 = " << minDR_3 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_4 = " << minDR_4 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_5 = " << minDR_5 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_10 = " << minDR_10 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_15 = " << minDR_15 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_20 = " << minDR_20 << std::endl;
-      // std::cout << "lepton pt = " << rsa->pt << ", min dR_26 = " << minDR_26 << std::endl;
 
       rsa->minMatchedGBDeltaR_1 = minGBDR_1;
       rsa->minMatchedGBDeltaR_2 = minGBDR_2;
@@ -1043,20 +991,9 @@ const int LeptonAnalysis::findTrigMatch_OLD(const PseudoLepton & lepton,
     if (!triggerEvent->path(hltPaths_[itrig])) continue;
     if (!triggerEvent->path(hltPaths_[itrig])->wasAccept()) continue;
 
-    //    std::cout << "Trigger path name " << hltPaths_[itrig] << std::endl;
-    //    std::cout << triggerEvent->objectInPath(trigger::TriggerObjectType::TriggerPhoton,hltPaths_[itrig]) << std::endl;
-
     // get all trigger objects associated with this HLT path
     const pat::TriggerObjectRefVector triggerObjects(triggerEvent->pathObjects(hltPaths_[itrig]));//,false));
-    //    std::cout << "Number of trigger objects : " << triggerObjects.size() << std::endl;
     for (unsigned i=0; i<triggerObjects.size(); i++) {
-
-      //      std::vector<int> objectType = triggerObjects[i]->triggerObjectTypes();
-      //
-      //      for (unsigned int j=0; j < objectType.size(); j++ ) {
-      //        std::cout << "Object type : " << objectType[j] << std::endl;
-      //      }
-
       ++triggerObjectIndex;
       double trig_eta=triggerObjects[i]->eta();
       double trig_phi=triggerObjects[i]->phi();
@@ -1279,51 +1216,14 @@ bool LeptonAnalysis::doTrigger(const edm::Event& iEvent)
 }
 
 
-// TrajectoryStateClosestToBeamLine LeptonAnalysis::getGenParticleStateClosestToBeamline( const edm::EventSetup& iSetup, const  reco::GenParticle & part ) {
-FreeTrajectoryState LeptonAnalysis::getGenParticleStateClosestToBeamline( const edm::EventSetup& iSetup, const  reco::GenParticle & part ) {
-  // Get the magnetic field
-  // edm::ESHandle<MagneticField> theMagField;
-  // iSetup.get<IdealMagneticFieldRecord>().get(theMagField);
-
-  // Make FreeTrajectoryState of this gen particle
+FreeTrajectoryState LeptonAnalysis::getGenParticleStateClosestToBeamline( const edm::EventSetup& iSetup,
+                                                                          const  reco::GenParticle & part ) {
   FreeTrajectoryState fts(GlobalPoint(part.vx(),part.vy(),part.vz()),
 			  GlobalVector(part.px(),part.py(),part.pz()),
 			  part.charge(),
 			  0); //theMagField.product());
-
   FreeTrajectoryState ftsPCA(steppingHelixPropAny_->propagate(fts, beamSpot_));
-
-
-  // Get trajectory closest to beam line
-  // TSCBLBuilderNoMaterial tscblBuilder;
-  // TrajectoryStateClosestToBeamLine tsAtClosestApproach = tscblBuilder(fts,beamSpot_);
-
-//   if( fabs(part.pdgId()) == 13 && part.status() != 3 ) {
-//     std::cout << "from tscblBuilder: v(x,y,z) =            "
-// 	      << tsAtClosestApproach.trackStateAtPCA().position().x() << ", "
-// 	      << tsAtClosestApproach.trackStateAtPCA().position().y() << ", "
-// 	      << tsAtClosestApproach.trackStateAtPCA().position().z() << ", "
-// 	      << "p(x,y,z) = "
-// 	      << tsAtClosestApproach.trackStateAtPCA().momentum().x() << ", "
-// 	      << tsAtClosestApproach.trackStateAtPCA().momentum().y() << ", "
-// 	      << tsAtClosestApproach.trackStateAtPCA().momentum().z() << ", "
-// 	      << std::endl;
-// 
-// 
-//     std::cout << "from steppingHelixPropagator: v(x,y,z) = "
-// 	      << ftsPCA.position().x() << ", "
-// 	      << ftsPCA.position().y() << ", "
-// 	      << ftsPCA.position().z() << ", "
-// 	      << "p(x,y,z) = "
-// 	      << ftsPCA.momentum().x() << ", "
-// 	      << ftsPCA.momentum().y() << ", "
-// 	      << ftsPCA.momentum().z() << ", "
-// 	      << std::endl << std::endl;
-//   }
-
   return ftsPCA;
-
-  // return tsAtClosestApproach;
 }
 
 /// Compute the sumPt in a cone. This is absolute isolation.
@@ -1445,11 +1345,6 @@ reco::Track LeptonAnalysis::correctImpactParameter(const reco::Track &track, con
   double d0 = -track.dxy(vtx);
   double dz = track.dz(vtx);
 
-  // std::cout << "Now correcting track. Initial parameters are:" << std::endl;
-  // std::cout << "px " << track.px() << " py " << track.py() << " pz " << track.pz() << std::endl;
-  // std::cout << "eta " << track.eta()  << " phi " << track.phi() << " d0 " << d0;
-  // std::cout << " dz " << track.dz(vtx) << std::endl;
-
   // express all distances relative to primary vertex/beamspot
   double vx = track.vx() - vtx.x();
   double vy = track.vy() - vtx.y();
@@ -1477,11 +1372,6 @@ reco::Track LeptonAnalysis::correctImpactParameter(const reco::Track &track, con
   newTrack.setTrackerExpectedHitsInner(track.trackerExpectedHitsInner());
   newTrack.setTrackerExpectedHitsOuter(track.trackerExpectedHitsOuter());
 
-  // std::cout << "Correction complete. Final parameters are:" << std::endl;
-  // std::cout << "px " << newTrack.px() << " py " << newTrack.py() << " pz " << newTrack.pz() << std::endl;
-  // std::cout << "eta " << newTrack.eta()  << " phi " << newTrack.phi() << " d0 " << -newTrack.dxy(vtx);
-  // std::cout << " dz " << newTrack.dz(vtx) << std::endl;;
-
   return newTrack;
 }
 
@@ -1499,19 +1389,6 @@ reco::TransientTrack LeptonAnalysis::CorrectTransientTrack(const reco::Transient
   reco::TransientTrack tTrackCorrected = CorrectTransientTrack(tTrack.track(), deltaD0, deltaDZ, usePV);
   return tTrackCorrected;
 }
-
-///// lepton IDs are specific to lepton type, but we provide a default template here
-//template<class Lepton>
-//bool LeptonAnalysis::leptonID(const Lepton& lepton)
-//{
-//    return true;
-//}
-//
-///// override template for the electron channel, where we do use a specific ID requirement
-//bool LeptonAnalysis::leptonID(const pat::Electron& electron)
-//{
-//  return int(electron.electronID("eidLoose"))&1;
-//}
 
 /// Default method, returns -999
 double LeptonAnalysis::leptonTiming(const PseudoLepton &track)
@@ -1576,21 +1453,13 @@ void LeptonAnalysis::fillDipseudoleptonCandidates(const edm::Event& iEvent, cons
       candidates_.candidates_.push_back(TreeDipseudoLeptonCandidate());
       TreeDipseudoLeptonCandidate & candidate = candidates_.candidates_.back();
       fillCandidateInfo( candidate, highPtLepton, lowPtLepton, iEvent, iSetup, false, particles );
-
-      // // Now make a candidate where the tip and lip are corrected
-      // // Only for data...
-      // if ( isData_ ) {
-      //   // std::cout << "It's data!" << std::endl;
-      //   candidates_.candidatesCorrectedTipLip_.push_back(TreeDipseudoLeptonCandidate());
-      //   TreeDipseudoLeptonCandidate & candidateCorrected = candidates_.candidatesCorrectedTipLip_.back();
-      //   fillCandidateInfo( candidateCorrected, highPtLepton, lowPtLepton, iEvent, iSetup, false );
-      // }
     }
   }
 
   // Loop on the candidates and find matches between RSA and track-based candidates
   findCandidateMatches( iEvent, iSetup, theMagField, particles );
 }
+
 
 const TreeLepton LeptonAnalysis::getLepton( unsigned int index )
 {
@@ -1608,32 +1477,13 @@ const TreeLepton LeptonAnalysis::getLepton( unsigned int index )
 void LeptonAnalysis::findCandidateMatches( const edm::Event& iEvent, const edm::EventSetup& iSetup,
 					   const edm::ESHandle<MagneticField> & theMagField, const edm::Handle<edm::View<PseudoLepton> > & particles )
 {
-//   std::cout << "total candidates = " << candidates_.candidates_.size() << std::endl;
-//   int totalRSA = 0;
-//   int totalTK = 0;
-//   for( std::vector<TreeDipseudoLeptonCandidate>::iterator it = candidates_.candidates_.begin(); it != candidates_.candidates_.end(); ++it ) {
-//     TreeLepton rsaL = getLepton( it->leptonIndexL );
-//     TreeLepton rsaH = getLepton( it->leptonIndexH );
-//     if( rsaL.isStandAloneMuon && rsaH.isStandAloneMuon ) ++totalRSA;
-//     if( rsaL.isCentralTrack && rsaH.isCentralTrack ) ++totalTK;
-//   }
-//   std::cout << "total RSA candidates = " << totalRSA << std::endl;
-//   std::cout << "total track-based candidates = " << totalTK << std::endl;
-
-  // double deltaEta = 0.;
-  // double deltaPhi = 0.;
   for( std::vector<TreeDipseudoLeptonCandidate>::iterator rsaCand = candidates_.candidates_.begin(); rsaCand != candidates_.candidates_.end(); ++rsaCand ) {
 
     TreeLepton rsaL = getLepton( rsaCand->leptonIndexL );
     TreeLepton rsaH = getLepton( rsaCand->leptonIndexH );
     if( !rsaL.isStandAloneMuon || !rsaH.isStandAloneMuon ) continue;
-//    std::cout << "La la la...." << std::endl;
-    std::cout << "rsaCand->leptonIndexL = " << rsaCand->leptonIndexL << std::endl;
-    std::cout << "rsaCand->leptonIndexH = " << rsaCand->leptonIndexH << std::endl;
     PseudoLepton lowPtRSA = particles->at(rsaL.pseudoLeptonIndex);
     PseudoLepton highPtRSA = particles->at(rsaH.pseudoLeptonIndex);
-    // std::cout << "inner position L = " << lowPtRSA.innerPosition() << std::endl;
-    // std::cout << "inner position H = " << highPtRSA.innerPosition() << std::endl;
     GlobalPoint positionL( lowPtRSA.innerPosition().x(), lowPtRSA.innerPosition().y(), lowPtRSA.innerPosition().z() );
     GlobalPoint positionH( highPtRSA.innerPosition().x(), highPtRSA.innerPosition().y(), highPtRSA.innerPosition().z() );
 
@@ -1646,18 +1496,6 @@ void LeptonAnalysis::findCandidateMatches( const edm::Event& iEvent, const edm::
       if( !tkL.isCentralTrack || !tkH.isCentralTrack ) continue;
       PseudoLepton lowPtTK = particles->at(tkL.pseudoLeptonIndex);
       PseudoLepton highPtTK = particles->at(tkH.pseudoLeptonIndex);
-      // // Match the two leptons at the innermost hit position of the standAloneMuon
-      // float dRL = std::min(extrapolateAndDeltaR( leptonTrack(lowPtTK), positionL, deltaEta, deltaPhi ),
-      //		   extrapolateAndDeltaR( leptonTrack(highPtTK), positionL, deltaEta, deltaPhi ));
-      // Match the two leptons at the muon chambers
-      // float dRH = std::min(extrapolateAndDeltaR( leptonTrack(lowPtTK), positionH, deltaEta, deltaPhi ),
-      //		   extrapolateAndDeltaR( leptonTrack(highPtTK), positionH, deltaEta, deltaPhi ));
-
-
-      // FreeTrajectoryState fts(GlobalPoint(lowPtTK.outerPosition().x(), lowPtTK.outerPosition().y(), lowPtTK.outerPosition().z()),
-      //		      GlobalVector(lowPtTK.outerMomentum().x(), lowPtTK.outerMomentum().y(), lowPtTK.outerMomentum().z()),
-      //		      lowPtTK.charge(),
-      //		      theMagField.product());
      
       // To avoid NaN stuff...
       float newDR;
@@ -1665,7 +1503,6 @@ void LeptonAnalysis::findCandidateMatches( const edm::Event& iEvent, const edm::
       float a2 = extrapolateToMuon(lowPtTK, highPtRSA, positionH, theMagField);
       float b1 = extrapolateToMuon(highPtTK, lowPtRSA, positionL, theMagField);
       float b2 = extrapolateToMuon(highPtTK, highPtRSA, positionH, theMagField);
-      std::cout <<" a1 = "<<a1<<", a2= "<<a2<<", b1= "<<b1<<", b2= "<<b2<<std::endl;
       if ( a1 ==a1 && a2==a2 && b1==b1 && b2==b2 ) newDR = std::min(std::min(a1,a2), std::min(b1,b2));
       else {
         if ( a1!=a1 ) a1= 100000.0;
@@ -1674,37 +1511,12 @@ void LeptonAnalysis::findCandidateMatches( const edm::Event& iEvent, const edm::
         if ( b2!=b2 ) b2= 100.0;
         newDR = std::min(std::min(a1,a2), std::min(b1,b2));
       }
-/*      float newDR = std::min( std::min(extrapolateToMuon(lowPtTK, lowPtRSA, positionL, theMagField),
-				       extrapolateToMuon(lowPtTK, highPtRSA, positionH, theMagField)),
-			      std::min(extrapolateToMuon(highPtTK, lowPtRSA, positionL, theMagField),
-				       extrapolateToMuon(highPtTK, highPtRSA, positionH, theMagField)) );
-       std::cout << " extrapolateToMuon(lowPtTK, lowPtRSA, positionL, theMagField) = " << extrapolateToMuon(lowPtTK, lowPtRSA, positionL, theMagField) << std::endl;
-       std::cout << " extrapolateToMuon(lowPtTK, highPtRSA, positionH, theMagField) = " << extrapolateToMuon(lowPtTK, highPtRSA, positionH, theMagField) << std::endl;
-       std::cout << " extrapolateToMuon(highPtTK, lowPtRSA, positionL, theMagField) = " << extrapolateToMuon(highPtTK, lowPtRSA, positionL, theMagField) << std::endl;
-       std::cout << " extrapolateToMuon(highPtTK, highPtRSA, positionH, theMagField) = " << extrapolateToMuon(highPtTK, highPtRSA, positionH, theMagField) << std::endl;
-*/
-       std::cout << "new DR = " << newDR << std::endl;
-    std::cout << "tkCand->leptonIndexL = " << tkCand->leptonIndexL << std::endl;
-    std::cout << "tkCand->leptonIndexH = " << tkCand->leptonIndexH << std::endl;
-      
-
-      // float dR = std::min(dRL, dRH);
-      // std::cout << "dR = " << dR << std::endl;
-
-       std::cout << "normal dR = "
- 		<< std::min(std::min(deltaR<reco::TrackBase::Vector,reco::TrackBase::Vector>(lowPtTK.momentum(),lowPtRSA.momentum()),
- 				     deltaR<reco::TrackBase::Vector,reco::TrackBase::Vector>(lowPtTK.momentum(),highPtRSA.momentum())),
- 			    std::min(deltaR<reco::TrackBase::Vector,reco::TrackBase::Vector>(highPtTK.momentum(),lowPtRSA.momentum()),
- 				     deltaR<reco::TrackBase::Vector,reco::TrackBase::Vector>(highPtTK.momentum(),highPtRSA.momentum())))
- 		<< std::endl;
 
       if( newDR < minDR ) {
 	minDR = newDR;
 	minDRIndex = candIndex;
       }
     }
-    // std::cout << "Best match with index " << minDRIndex << " and deltaR = " << minDR << std::endl;
-    std::cout << "Candidate index " << candIndex << std::endl;
     rsaCand->tkMatches.push_back(std::make_pair(minDRIndex, minDR));
   }
 }
@@ -1713,28 +1525,12 @@ void LeptonAnalysis::findCandidateMatches( const edm::Event& iEvent, const edm::
 float LeptonAnalysis::extrapolateToMuon(const PseudoLepton & tk, const PseudoLepton & rsa,
 					const GlobalPoint & position, const edm::ESHandle<MagneticField> & theMagField)
 {
-  // std::cout << "before fts" << std::endl;
   FreeTrajectoryState fts(GlobalPoint(tk.vx(), tk.vy(), tk.vz()),
 			  GlobalVector(tk.px(), tk.py(), tk.pz()),
 			  tk.charge(),
 			  0);//theMagField.product());
-  // std::cout << "after fts" << std::endl;
-  // try {
   FreeTrajectoryState ftsPCA(steppingHelixPropAlong_->propagate(fts, position));
-  // FreeTrajectoryState ftsPCA(steppingHelixPropAny_->propagate(fts, position));
-  // std::cout << "after ftsPCA" << std::endl;
-  // std::cout << "ftsPCA position: " << ftsPCA.position() << std::endl;
-  // std::cout << "muon inner position: " << position << std::endl;
-  // std::cout << "globalMuon pt = " << tk.pt() << ", px = " << tk.px() << ", py = " << tk.py() << ", pz = " << tk.pz()
-  //      << "globalMuon eta = " << tk.eta() << ", phi = " << tk.phi()
-  //      << ", d0 = " << tk.d0() << ", d0/sigma = " << tk.d0()/tk.d0Error() << std::endl;
-
   return deltaR(ftsPCA.momentum().eta(), ftsPCA.momentum().phi(), rsa.innerMomentum().eta(), rsa.innerMomentum().phi());
-  // }
-  // catch(...) {
-  //   std::cout << "extrapolation failed for lepton with pt = " << tk.pt() << std::endl;
-  // }
-  // return 10000.;
 }
 
 
@@ -1765,41 +1561,6 @@ void LeptonAnalysis::fillCandidateInfo( TreeDipseudoLeptonCandidate & candidate,
 
   bool validTracks = (tTrackLowPtLepton.isValid() && tTrackHighPtLepton.isValid());
   if( !validTracks ) return;
-
-
-  // Use corrected d0 and z0 if requested
-  // if ( correctTipLip ) {
-  //   // Gather tracks and correct their d0 and z0 before the vertex fit
-  // 
-  //   float deltaD0_L = 0;
-  //   float deltaDZ_L = 0;
-  //   float deltaD0_H = 0;
-  //   float deltaDZ_H = 0;
-  //   if ( inBadRunRange() ) {
-  //     deltaD0_L = d0Corrections_badRunRange_->GetBinContent(d0Corrections_badRunRange_->FindBin(tTrackLowPtLepton.track().theta(), tTrackLowPtLepton.track().phi()));
-  //     deltaDZ_L = z0Corrections_badRunRange_->GetBinContent(z0Corrections_badRunRange_->FindBin(tTrackLowPtLepton.track().theta(), tTrackLowPtLepton.track().phi()));
-  //     deltaD0_H = d0Corrections_badRunRange_->GetBinContent(d0Corrections_badRunRange_->FindBin(tTrackHighPtLepton.track().theta(), tTrackHighPtLepton.track().phi()));
-  //     deltaDZ_H = z0Corrections_badRunRange_->GetBinContent(z0Corrections_badRunRange_->FindBin(tTrackHighPtLepton.track().theta(), tTrackHighPtLepton.track().phi()));
-  //   }
-  //   else {
-  //     deltaD0_L = d0Corrections_->GetBinContent(d0Corrections_->FindBin(tTrackLowPtLepton.track().theta(), tTrackLowPtLepton.track().phi()));
-  //     deltaDZ_L = z0Corrections_->GetBinContent(z0Corrections_->FindBin(tTrackLowPtLepton.track().theta(), tTrackLowPtLepton.track().phi()));
-  //     deltaD0_H = d0Corrections_->GetBinContent(d0Corrections_->FindBin(tTrackHighPtLepton.track().theta(), tTrackHighPtLepton.track().phi()));
-  //     deltaDZ_H = z0Corrections_->GetBinContent(z0Corrections_->FindBin(tTrackHighPtLepton.track().theta(), tTrackHighPtLepton.track().phi()));
-  //   }
-  //   bool usePV = true;
-  // 
-  //   // correct vertex only
-  //   tTrackLowPtLepton = CorrectTransientTrack(tTrackLowPtLepton.track(),-1.0 * deltaD0_L,-1.0 * deltaDZ_L,usePV);
-  //   tTrackHighPtLepton = CorrectTransientTrack(tTrackHighPtLepton.track(),-1.0 * deltaD0_H,-1.0 * deltaDZ_H,usePV);
-  // 
-  //   // correct vertex and momentum
-////     tTrackLowPtLepton = CorrectTransientTrack(tTrackLowPtLepton,deltaD0_L,deltaDZ_L,usePV);
-////     tTrackHighPtLepton = CorrectTransientTrack(tTrackHighPtLepton,deltaD0_H,deltaDZ_H,usePV);
-  // 
-  //   validTracks = (tTrackLowPtLepton.isValid() && tTrackHighPtLepton.isValid());
-  // }
-
 
   // Gather transient tracks
   std::vector<reco::TransientTrack> fitTracks;
@@ -1849,8 +1610,7 @@ void LeptonAnalysis::fillCandidateInfo( TreeDipseudoLeptonCandidate & candidate,
     candidate.pvRefit_ndof = refittedPV.ndof();
 
     // Save if vertex is valid
-    //        if (leptonVertex.isValid()) {
-    if (leptonVertex.isValid()){
+    if (leptonVertex.isValid()) {
       candidate.validVertex=1;
 
       // Vertex Chi^2
@@ -2145,56 +1905,12 @@ void LeptonAnalysis::fillCandidateInfo( TreeDipseudoLeptonCandidate & candidate,
     reco::TrackBase::Vector mom1 = tTrackLowPtLepton.track().momentum();
     reco::TrackBase::Vector mom2 = tTrackHighPtLepton.track().momentum();
     candidate.cosine = mom1.Dot(mom2)/mom1.R()/mom2.R();
-
-    // float theta1 = 2*atan(exp(-tTrackLowPtLepton.track().momentum().eta()));
-    // float theta2 = 2*atan(exp(-tTrackHighPtLepton.track().momentum().eta()));
-    // float cosine = sin(theta1)*sin(theta2)*cos(tTrackLowPtLepton.track().momentum().phi() - tTrackHighPtLepton.track().momentum().phi()) + cos(theta1)*cos(theta2);
-    // std::cout << "cosine    = " << candidate.cosine << std::endl;
-    // std::cout << "re-cosine = " << cosine << std::endl;
-
-
     candidate.deltaR = deltaR<reco::TrackBase::Vector,reco::TrackBase::Vector>(mom1,mom2);
     // general kinematic information about candidate
     candidate.pt=diLeptonMom.pt();
     candidate.eta=diLeptonMom.eta();
     candidate.phi=diLeptonMom.phi();
-
-
-    //            // scale momenta to force dR=0 (phi component only).
-    //            // we scale up because we assume
-    //            // the momentum is underestimated due to energy loss
-    //            double momScale=-(mom1.y()*vertexDir.x()-mom1.x()*vertexDir.y())/(mom2.y()*vertexDir.x()-mom2.x()*vertexDir.y());
-    //            if (momScale>1) {
-    //              candidate.scaleCorrMass=((*(part1.p4))+momScale*(*(part2.p4))).mass();
-    //            } else {
-    //              candidate.scaleCorrMass=((*(part1.p4))/momScale+(*(part2.p4))).mass();
-    //            }
-
-    //            // angle between positive lepton momentum in dilepton rest frame and dilepton momentum
-    //            math::XYZTLorentzVector positiveMom;
-    //            if (part1.transientTrack.track().charge()>0) positiveMom = *(part1.p4); else positiveMom = *(part2.p4);
-    //            ROOT::Math::Boost boost;
-    //            boost.SetComponents(-diLeptonMom/diLeptonMom.E());
-    //            math::XYZTLorentzVector cmsMom = boost(positiveMom);
-    //            candidate.cosThetaStar = TMath::Cos(angle<math::XYZTLorentzVector,math::XYZTLorentzVector>
-    //            (diLeptonMom,cmsMom));
-    //
-
-
-    //        }
   }
-
-  //      // Gen info
-  //      if( lowPtLepton.genPdgId != 0 ) candidate.pdgIdL = leptons_[iLowPt].genPart->pdgId();
-  //      if( highPtLepton.genPdgId != 0 ) candidate.pdgIdH = leptons_[iHighPt].genPart->pdgId();
-  //      if( lowPtLepton.genSignalOriginPdgId != 0 ) candidate.originPdgIdL = leptons_[iLowPt].motherPart->pdgId();
-  //      if( highPtLepton.genSignalOriginPdgId != 0 ) candidate.originPdgIdH = leptons_[iHighPt].motherPart->pdgId();
-  //      if( lowPtLepton.genSignalOriginPdgId != 0 && (lowPtLepton.genSignalOriginPdgId == highPtLepton.genSignalOriginPdgId) ) {
-  //        GenEventProperties::DecayLengthAndType dlt(GenEventProperties::getDecayLengthAndType(*(leptons_[iLowPt].genPart)));
-  //        candidate.genDecayLength2D = dlt.decayLength2D;
-  //        candidate.genDecayLength3D = dlt.decayLength3D;
-  //        candidate.genctau = dlt.ctau;
-  //      }
 }
 
 void LeptonAnalysis::fillDiphotonCandidates(const edm::Event& iEvent)
@@ -2259,18 +1975,7 @@ const reco::Candidate* LeptonAnalysis::signalOrigin(const reco::Candidate* part)
   if (found3) return found3; else return found2;
 }
 
-//int LeptonAnalysis::decayChannel(const reco::Candidate& part)
-//{
-//  // first check direct descendants
-//  for (unsigned i=0; i<part.numberOfDaughters(); i++) {
-//    const reco::Candidate* daughter = part.daughter(i);
-//    int pid = abs(daughter->pdgId());
-//    if (pid==11 || pid==13 || pid==15) return pid;
-//  }
-//  return 0;
-//}
-
-bool LeptonAnalysis::inBadRunRange(){
+/*bool LeptonAnalysis::inBadRunRange(){
 
   // CHeck if run has been set in tree for this event
   if ( candidates_.run == -999 ) {
@@ -2285,7 +1990,7 @@ bool LeptonAnalysis::inBadRunRange(){
 
   return false;
 }
-
+*/
 void LeptonAnalysis::beginJob()
 {
   vertexFitter_ = new KalmanVertexFitter(true);

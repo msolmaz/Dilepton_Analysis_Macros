@@ -73,8 +73,8 @@ class PseudoLepton : public reco::Track
 //  const reco::MuonTimeExtra & muonTimeDT() const { return timedt_; }
 //  const reco::MuonTimeExtra & muonTimeCSC() const { return timecsc_; }
 
-//   float innerPositionX, innerPositionY, innerPositionZ;
-//   float outerPositionX, outerPositionY, outerPositionZ;
+  float innerPositionX, innerPositionY, innerPositionZ;
+  float outerPositionX, outerPositionY, outerPositionZ;
 };
 
 #endif

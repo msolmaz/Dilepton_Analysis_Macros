@@ -88,10 +88,15 @@ struct Candidates : public TObject
       candidatesCorrectedTipLip_.clear();
     }
 
+// Event related variables
+    unsigned int run;
+    unsigned int lumi;
+    unsigned int event;
+
     // Event related variables
-    Int_t run;
-    Int_t lumi;
-    Int_t event;
+//    Int_t run;
+//    Int_t lumi;
+//    Int_t event;
 
     // Position of primary PV (used for d0 calculations
     Float_t pv_x;
