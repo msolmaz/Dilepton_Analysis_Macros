@@ -1,0 +1,3 @@
+Data_Mu_Run2011A12Oct_pat_20140624
+Delivered Lumi : 2332688129.93
+Recorded Lumi : 2292905656.61
