@@ -106,10 +106,50 @@ process.muTrackAnalysis.leptonPtCut = 25
 process.muTrackAnalysis.leptonRSAPtCut = 0
 process.muTrackAnalysis.leptonSCEtCut = 0
 process.muTrackAnalysis.hltPaths = cms.vstring(
+                                          #"HLT_L2Mu11",  # Run2010A1 (136035-141881)
+                                          #"HLT_L2Mu15",  # Run2010A2 (141956-144114)
+                                          #"HLT_L2Mu25",                   # Run2010B1 (146428-147120)
+                                          #"HLT_L2DoubleMu20_NoVertex_v1", # Run2010B2 (147121-150000)
+                                          #"HLT_L2DoubleMu23_NoVertex_v1",
+                                          #"HLT_L2DoubleMu23_NoVertex_v2",
+                                          #"HLT_L2DoubleMu23_NoVertex_v3",
+                                          #"HLT_L2DoubleMu23_NoVertex_v4",
+                                          #"HLT_L2DoubleMu23_NoVertex_v5",
+                                          #"HLT_L2DoubleMu23_NoVertex_v6",
+                                          #"HLT_L2DoubleMu23_NoVertex_v7",
+                                          #"HLT_L2DoubleMu30_NoVertex_v1",
+                                          #"HLT_L2DoubleMu30_NoVertex_v2",
+                                          #"HLT_L2DoubleMu30_NoVertex_v3",
+                                          #"HLT_L2DoubleMu30_NoVertex_v4",
+                                          #"HLT_MET120_v1",
+                                          #"HLT_MET120_v2",
+                                          #"HLT_MET120_v3",
+                                          #"HLT_MET120_v4",
+                                          #"HLT_MET120_v5",
+                                          #"HLT_MET120_v6",
+                                          #"HLT_MET120_v7"
                                             "HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v1",
                                             "HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v2",
                                             "HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v3",
-                                            )
+											"HLT_PFMET150_v1",
+											"HLT_PFMET150_v2",
+											"HLT_PFMET150_v3",
+											"HLT_PFMET150_v4",
+											"HLT_PFMET150_v5",
+											"HLT_PFMET150_v6",
+											"HLT_PFMET150_v7",
+										    "HLT_PFMET150_v8",
+											"HLT_PFMET150_v9",
+											"HLT_MET120_HBHENoiseCleaned_v1",
+											"HLT_MET120_HBHENoiseCleaned_v2",
+											"HLT_MET120_HBHENoiseCleaned_v3",
+											"HLT_MET120_HBHENoiseCleaned_v4",
+											"HLT_MET120_HBHENoiseCleaned_v5",
+											"HLT_MET120_HBHENoiseCleaned_v6",
+											"HLT_MET120_HBHENoiseCleaned_v7",
+											"HLT_MET120_HBHENoiseCleaned_v8",
+											"HLT_MET120_HBHENoiseCleaned_v9",
+)
 if ( sampleType == "SIGNALMC" ) : process.muTrackAnalysis.hltPaths.append("*")
 if sampleType == "DATA" : 
     process.muTrackAnalysis.UseMCTruth = False

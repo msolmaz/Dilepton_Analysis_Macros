@@ -23,13 +23,15 @@ sampleType = "SIGNALMC"
 
 
 
+
+
 samplePatDBSName=""
 
-sampleBaseDir="/store/user/lpcdve/DisplacedLeptons/Chi0ToNuLL_MSquark120_MChi48_pat_20140218/demattia//LongLivedChi0ToNuLL_MSquark-120_MChi-48_TuneZ2Star_8TeV-pythia6/Chi0ToNuLL_MSquark120_MChi48_pat_20140218/44ed12438b36eeb4f61ccae26cc96d54/"
+sampleBaseDir="file:/eos/uscms/store/user/lpcdve/noreplica/DisplacedLeptons/Chi0ToNuLL_MSquark120_MChi48_pat_20140502/zhenhu//LongLivedChi0ToNuLL_MSquark-120_MChi-48_TuneZ2Star_8TeV-pythia6/Chi0ToNuLL_MSquark120_MChi48_pat_20140502/9a5984d39acb29a93d7b43a925b0ec93/"
 samplePatFiles = [
-sampleBaseDir+"PATtuple_2_1_LbC.root",
-sampleBaseDir+"PATtuple_5_1_kPF.root",
-sampleBaseDir+"PATtuple_3_1_5jT.root",
-sampleBaseDir+"PATtuple_4_1_1S6.root",
-sampleBaseDir+"PATtuple_1_1_glh.root",
+sampleBaseDir+"PATtuple_1_1_m0j.root",
+sampleBaseDir+"PATtuple_2_1_eMG.root",
+sampleBaseDir+"PATtuple_3_1_JbR.root",
+sampleBaseDir+"PATtuple_4_1_VfG.root",
+sampleBaseDir+"PATtuple_5_1_r92.root",
 ]

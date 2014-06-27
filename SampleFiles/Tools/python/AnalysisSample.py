@@ -393,6 +393,7 @@ class AnalysisSample:
                 condorscript.write("Queue 1")
                 condorscript.close()
                 batchcommand="cd "+self.workdir+"; condor_submit condor"+str(i+1)
+#                batchcommand=" "
             else:
                 print "ERROR: No idea how to run jobs at",runmode,"....yet"
                 sys.exit(1)
@@ -600,6 +601,7 @@ def analyseLumi(workdir,analysisSample):
     trigger=""
     if workdir.find("Mu") != -1:
         trigger="HLT_L2DoubleMu*"
+        trigger="HLT_MET120_v*"
         pass
     else:
         trigger="HLT_Photon36_*OR*Photon22*OR*"
@@ -614,7 +616,8 @@ def analyseLumi(workdir,analysisSample):
     # More exact than and slightly different format to that specified lumiCalc2.py
     trigger=""
     if workdir.find("Mu") != -1:
-        trigger="HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v"
+        #trigger="HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v"
+        trigger="HLT_MET120_v"
         pass
     else:
 #        trigger="HLT_DoublePhoton48_HEVT_v"
@@ -680,6 +683,9 @@ def getPUInfo(workdir,analysisSample):
     puJson=""
     if analysisSample.sampleDataSet.find("Run2012A")>=0 or analysisSample.sampleDataSet.find("Run2012B")>=0 or analysisSample.sampleDataSet.find("Run2012C1")>=0:
         puJson="/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/PileUp/pileup_JSON_DCSONLY_190389-200041_pixelcorr.txt"
+        pass
+    elif analysisSample.sampleDataSet.find("Run2011")>=0:
+        puJson="/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions11/7TeV/PileUp/pileup_2011_JSON_pixelLumi.txt"
         pass
     else :
         puJson="/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/PileUp/pileup_JSON_DCSONLY_190389-208686_corr.txt"

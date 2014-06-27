@@ -139,12 +139,29 @@ PseudoLeptonProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByLabel(muonTag_,muons);
     for (reco::TrackCollection::const_iterator trk=muons->begin(); trk!=muons->end(); ++trk) {
       if (trk->pt()>minPt_) {
-        PseudoLepton pl(*trk);
-        pl.isStandAloneMuon(true);
-        pl.isGlobalMuon(false);
-        pl.isTrackerMuon(false);
-        pl.isCentralTrack(false);
-        leptons->push_back(pl);
+		//std::cout<<muonTag_.label()<<", innerPosition().y()= "<<trk->innerPosition().y()<<std::endl;
+		if (muonTag_.label() == "cosmicMuons" && trk->innerPosition().y() > 0) {
+		  std::cout<<"before change: "<<trk->phi()<<std::endl;
+		  math::XYZVector newMomentum(-trk->px(),-trk->py(),-trk->pz());
+		  reco::Track signChangedTrk(trk->chi2(), trk->ndof(), trk->referencePoint(), newMomentum, trk->charge(), trk->covariance(), trk->algo());
+          signChangedTrk.setExtra(trk->extra());
+		  signChangedTrk.setHitPattern(trk->hitPattern());
+		  std::cout<<"before change: "<<signChangedTrk.phi()<<std::endl;
+		  PseudoLepton pl(signChangedTrk);
+          pl.isStandAloneMuon(true);
+          pl.isGlobalMuon(false);
+          pl.isTrackerMuon(false);
+          pl.isCentralTrack(false);
+          leptons->push_back(pl);
+		}
+        else {
+		  PseudoLepton pl(*trk);
+          pl.isStandAloneMuon(true);
+          pl.isGlobalMuon(false);
+          pl.isTrackerMuon(false);
+          pl.isCentralTrack(false);
+          leptons->push_back(pl);
+		}
         //        std::cout << "RSA innerPosition = "<< trk->innerPosition()
         //                  << " outerPosition = " << trk->outerPosition() << std::endl;
 // 	pl.innerPositionX = trk->innerPosition().x();

@@ -132,8 +132,13 @@ if ( len(duplicates)>0) :
 
 outputFileList=open(sampleWorkdir+"/listOfPatFiles.txt","w")
 
+print "fileDir = "+fileDir
+
+
 if baseDirPrefix.find("FNAL") != -1:
-    outputFileList.write('sampleBaseDir="'+fileDir.split("/pnfs/cms/WAX/11")[1]+'/"\n')
+    # outputFileList.write('sampleBaseDir="'+fileDir.split("/pnfs/cms/WAX/11")[1]+'/"\n')
+    outputFileList.write('sampleBaseDir=file:'+fileDir+'/"\n')
+    print "outputFileList = "+'sampleBaseDir=file:'+fileDir+'/"\n'
 else:
     outputFileList.write('sampleBaseDir="'+baseDirPrefix+'/'+fileDir+'/"\n')
 outputFileList.write("samplePatFiles = [\n")
@@ -190,7 +195,8 @@ newCffFile.write('samplePatDBSName="'+publishedDatasetName+'"\n\n')
 
 # Have new file, but missing pat file list at bottom.  Same as before
 if baseDirPrefix.find("FNAL") != -1:
-    newCffFile.write('sampleBaseDir="'+fileDir.split("/pnfs/cms/WAX/11")[1]+'/"\n')
+    # newCffFile.write('sampleBaseDir="'+fileDir.split("/pnfs/cms/WAX/11")[1]+'/"\n')
+    newCffFile.write('sampleBaseDir="'+'file:'+fileDir+'/"\n')
 else:
     newCffFile.write('sampleBaseDir="'+baseDirPrefix+'/'+fileDir+'/"\n')
 newCffFile.write("samplePatFiles = [\n")

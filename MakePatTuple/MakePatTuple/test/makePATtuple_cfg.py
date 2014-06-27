@@ -18,7 +18,7 @@ plfilter=True
 # Since Condor is only applicable to MC, default to appropriate settings for
 # it.
 
-sampleUseJets=True  # set default for backwards compatibility
+sampleUseJets=False  # set default for backwards compatibility
 
 useCondor=False
 if (useCondor):
@@ -143,29 +143,118 @@ if (sampleUseJets):
 # ECAL laser and HCAL laser filters.
 #==============================================================================
 
+## The beam scraping filter __________________________________________________||
+process.noscraping = cms.EDFilter(
+    "FilterOutScraping",
+    applyfilter = cms.untracked.bool(True),
+    debugOn = cms.untracked.bool(False),
+    numtrack = cms.untracked.uint32(10),
+    thresh = cms.untracked.double(0.25)
+    )
+
+## The iso-based HBHE noise filter ___________________________________________||
+process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
+
+## The CSC beam halo tight filter ____________________________________________||
+process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
+
+## The HCAL laser filter _____________________________________________________||
+process.load("RecoMET.METFilters.hcalLaserEventFilter_cfi")
+process.hcalLaserEventFilter.vetoByRunEventNumber=cms.untracked.bool(False)
+process.hcalLaserEventFilter.vetoByHBHEOccupancy=cms.untracked.bool(True)
+
+## The ECAL dead cell trigger primitive filter _______________________________||
+process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
+## For AOD and RECO recommendation to use recovered rechits
+process.EcalDeadCellTriggerPrimitiveFilter.tpDigiCollection = cms.InputTag("ecalTPSkimNA")
+
+## The EE bad SuperCrystal filter ____________________________________________||
+process.load('RecoMET.METFilters.eeBadScFilter_cfi')
+
+## The Good vertices collection needed by the tracking failure filter ________||
+process.goodVertices = cms.EDFilter(
+    "VertexSelector",
+    filter = cms.bool(False),
+    src = cms.InputTag("offlinePrimaryVertices"),
+    cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && position.rho < 2")
+    )
+
+## The tracking failure filter _______________________________________________||
+process.load('RecoMET.METFilters.trackingFailureFilter_cfi')
+
 # require scraping filter
-process.scrapingVeto = cms.EDFilter("FilterOutScraping",
-                                    applyfilter = cms.untracked.bool(True),
-                                    debugOn = cms.untracked.bool(False),
-                                    numtrack = cms.untracked.uint32(10),
-                                    thresh = cms.untracked.double(0.25)
-                                    )
+
+#process.scrapingVeto = cms.EDFilter("FilterOutScraping",
+#                                    applyfilter = cms.untracked.bool(True),
+#                                    debugOn = cms.untracked.bool(False),
+#                                    numtrack = cms.untracked.uint32(10),
+#                                    thresh = cms.untracked.double(0.25)
+#                                    )
+
 # HB + HE noise filtering
-process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
+
+#process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # Good vertex filter
-process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
-                                           vertexCollection = cms.InputTag('offlinePrimaryVertices'),
-                                           minimumNDOF = cms.uint32(4) ,
-                                           maxAbsZ = cms.double(24),
-                                           maxd0 = cms.double(2)
-                                           )
+
+#process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
+#                                           vertexCollection = cms.InputTag('offlinePrimaryVertices'),
+#                                           minimumNDOF = cms.uint32(4) ,
+#                                           maxAbsZ = cms.double(24),
+#                                           maxd0 = cms.double(2)
+#                                           )
 
 # ECAL laser filter
-process.load('RecoMET.METFilters.ecalLaserCorrFilter_cfi') 
+
+#process.load('RecoMET.METFilters.ecalLaserCorrFilter_cfi') 
 
 ## HCAL laser filter
+
 process.load("EventFilter.HcalRawToDigi.hcallasereventfilter2012_cff")
+
+##MET Filter, June 13 2014, Fermilab
+
+## The CSC beam halo tight filter ____________________________________________||
+
+#process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
+
+## The HCAL laser filter _____________________________________________________||
+
+#process.load("RecoMET.METFilters.hcalLaserEventFilter_cfi")
+#process.hcalLaserEventFilter.vetoByRunEventNumber=cms.untracked.bool(False)
+#process.hcalLaserEventFilter.vetoByHBHEOccupancy=cms.untracked.bool(True)
+
+## The ECAL dead cell trigger primitive filter _______________________________||
+
+#process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
+
+## For AOD and RECO recommendation to use recovered rechits
+
+#process.EcalDeadCellTriggerPrimitiveFilter.tpDigiCollection = cms.InputTag("ecalTPSkimNA")
+
+## The EE bad SuperCrystal filter ____________________________________________||
+
+#process.load('RecoMET.METFilters.eeBadScFilter_cfi')
+
+
+## The tracking failure filter _______________________________________________||
+
+#process.load('RecoMET.METFilters.trackingFailureFilter_cfi')
+
+##############################
+
+#process.load("RecoMET.METFilters.metFilters_cff")
+
+#metFilters = cms.Sequence(
+      #  HBHENoiseFilter *
+#   CSCTightHaloFilter *
+     #  hcalLaserEventFilter *
+#   EcalDeadCellTriggerPrimitiveFilter *
+#   goodVertices * trackingFailureFilter *
+#   eeBadScFilter *
+   #  ecalLaserCorrFilter *
+#   trkPOGFilters
+#)
 
 
 #===============================================================================
@@ -202,9 +291,20 @@ process.mainSequence = process.patDefaultSequence
 process.p = cms.Path(process.nEventsTotal)
 
 if (not isMC):
-    process.p += process.scrapingVeto
-    process.p += process.primaryVertexFilter
+#    process.p += process.scrapingVeto
+    process.p += process.noscraping
+#    process.p += process.primaryVertexFilter
+    process.p += process.goodVertices
     process.p += process.HBHENoiseFilter
+###MET
+#    process.p += process.metFilters
+    process.p += process.EcalDeadCellTriggerPrimitiveFilter
+    process.p += process.CSCTightHaloFilter
+    process.p += process.hcalLaserEventFilter
+#    trackingfailureFilter = cms.Sequence(primaryVertexFilter * trackingFailureFilter)
+    process.p += process.trackingFailureFilter
+    process.p += process.eeBadScFilter
+#########
     if ( sampleDataSet.find("Run2012B-13Jul2012")>=0 or sampleDataSet.find("Run2012A-13Jul2012")>=0 ):
         process.p += process.ecalLaserCorrFilter
         pass
@@ -299,6 +399,11 @@ process.out.outputCommands += ['keep *_trackSel_*_*']
 process.out.outputCommands += ['keep *_*tandAloneMuons_*_*']
 # make sure we store the TrackExtra collection
 process.out.outputCommands += ['keep recoTrackExtras_generalTracks__*']
+# keep reco::muons and associated collections to recover TimeExtra for refittedStandAloneMuons
+process.out.outputCommands += ['keep *_muons_*_*']
+process.out.outputCommands += ['keep *_globalMuons_*_*']
+# keep the cosmicMuons1Leg to perform additional checks for cosmic background
+process.out.outputCommands += ['keep *_cosmicMuons1Leg_*_*']
 if (sampleUseJets):
    process.out.outputCommands += ['keep *_ak5GenJets_*_SIM']
    process.out.outputCommands += ['keep *_selectedPatJetsPFlow_*_*']
