@@ -1,673 +1,0 @@
-processing: /eos/uscms/store/user/lpcdve/noreplica/DisplacedLeptons/Trees/Data_Mu_Run2012A22Jan_analysis_20140305 Weight : -1 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 4683192
-Total events after event filters : 4.65838e+06
-Total events after trigger : 561201
-Total events after prefilter : 343775
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 999999
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 99999
-Maximum photon sigma ieta ieta barrel/endcap : 99999/99999
----> Di Lepton cuts
-Minimum Lxy significance : -99999
-Maximum Lxy significance : 9999
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 9999
-Maximum missing hits after vertex : 9999
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 298046
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 107670
-number of standALoneMuons candidates complementary to track-based candidates = 108553
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /eos/uscms/store/user/lpcdve/noreplica/DisplacedLeptons/Trees/Data_Mu_Run2012B22Jan_analysis_20140310 Weight : -1 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 27924748
-Total events after event filters : 2.7873e+07
-Total events after trigger : 3222844
-Total events after prefilter : 1.93482e+06
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 999999
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 99999
-Maximum photon sigma ieta ieta barrel/endcap : 99999/99999
----> Di Lepton cuts
-Minimum Lxy significance : -99999
-Maximum Lxy significance : 9999
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 9999
-Maximum missing hits after vertex : 9999
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 1654752
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 582900
-number of standALoneMuons candidates complementary to track-based candidates = 606466
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /eos/uscms/store/user/lpcdve/noreplica/DisplacedLeptons/Trees/Data_Mu_Run2012C22Jan_analysis_20140305 Weight : -1 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 36330308
-Total events after event filters : 3.6254e+07
-Total events after trigger : 5084917
-Total events after prefilter : 3.01728e+06
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 999999
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 99999
-Maximum photon sigma ieta ieta barrel/endcap : 99999/99999
----> Di Lepton cuts
-Minimum Lxy significance : -99999
-Maximum Lxy significance : 9999
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 9999
-Maximum missing hits after vertex : 9999
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 2563555
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 890779
-number of standALoneMuons candidates complementary to track-based candidates = 971416
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /eos/uscms/store/user/lpcdve/noreplica/DisplacedLeptons/Trees/Data_Mu_Run2012D22Jan_analysis_20140318 Weight : -1 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 37180772
-Total events after event filters : 3.71099e+07
-Total events after trigger : 5316282
-Total events after prefilter : 3.14441e+06
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 999999
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 99999
-Maximum photon sigma ieta ieta barrel/endcap : 99999/99999
----> Di Lepton cuts
-Minimum Lxy significance : -99999
-Maximum Lxy significance : 9999
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 9999
-Maximum missing hits after vertex : 9999
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 2666867
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 906896
-number of standALoneMuons candidates complementary to track-based candidates = 1.00433e+06
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /eos/uscms/store/user/msolmaz/CMSSW_5_3_8/src/workdirs/Chi0ToNuLL_MSquark120_MChi48_analysis_20140220 Weight : 0.5 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 10000
-Total events after event filters : 10000
-Total events after trigger : 10000
-Total events after prefilter : 10000
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 999999
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 99999
-Maximum photon sigma ieta ieta barrel/endcap : 99999/99999
----> Di Lepton cuts
-Minimum Lxy significance : -99999
-Maximum Lxy significance : 9999
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 9999
-Maximum missing hits after vertex : 9999
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Trigger required in signal MC : HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v2
-Number of events : 10000
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-
-Number of central ctau exotics : 4368
-Number of exotics before acceptance : 3742
-Number of exotics : 164.343
-Number of exotics after trigger : 117.759
-Number of exotics before prefilter : 34.2882
-
-Trigger efficiency : 71.6544
-Tracking preselection efficiency : 29.1172
-Total preselection efficiency : 20.8638
-
-71.7\% & 29.1\% & 20.9\% \\
-
-number of standALoneMuons candidates matched to track-based candidates = 38.7
-number of standALoneMuons candidates complementary to track-based candidates = 494
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /eos/uscms/store/user/msolmaz/CMSSW_5_3_8/src/workdirs/HTo2LongLivedTo4F_MH1000_MFF350_CTau35To3500_analysis_20140220 Weight : 0.5 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 84876
-Total events after event filters : 8.49e+04
-Total events after trigger : 84876
-Total events after prefilter : 8.49e+04
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Trigger required in signal MC : HLT_L2DoubleMu23_NoVertex_2Cha_Angle2p5_v2
-Number of events : 84876
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-
-Number of central ctau exotics : 10265
-Number of exotics before acceptance : 6806
-Number of exotics : 546
-Number of exotics after trigger : 340
-Number of exotics before prefilter : 178
-
-Trigger efficiency : 62.4
-Tracking preselection efficiency : 52.4
-Total preselection efficiency : 32.7
-
-62.4\% & 52.4\% & 32.7\% \\
-
-number of standALoneMuons candidates matched to track-based candidates = 5.52e+03
-number of standALoneMuons candidates complementary to track-based candidates = 1.54e+04
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/DYJets10_analysis_20140211 Weight : 1.25e+04 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 37633476
-Total events after event filters : 3.76e+07
-Total events after trigger : 34549
-Total events after prefilter : 1.86e+04
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 10055
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.406
-number of standALoneMuons candidates complementary to track-based candidates = 1.79
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/DYJets50_analysis_20140211 Weight : 3.5e+03 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 27759240
-Total events after event filters : 2.78e+07
-Total events after trigger : 6394484
-Total events after prefilter : 6.3e+06
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 2164668
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 126
-number of standALoneMuons candidates complementary to track-based candidates = 65
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/QCDmu15_analysis_20140211 Weight : 2.74e+06 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 1722681
-Total events after event filters : 1.72e+06
-Total events after trigger : 62
-Total events after prefilter : 3
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 2
-[=========================-------------------------] 50%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0
-number of standALoneMuons candidates complementary to track-based candidates = 2.97
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/QCDmu20_analysis_20140211 Weight : 1.35e+05 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 21384444
-Total events after event filters : 2.14e+07
-Total events after trigger : 264556
-Total events after prefilter : 6.03e+04
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 8179
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.00664
-number of standALoneMuons candidates complementary to track-based candidates = 28.1
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/TTJets_FullLept_analysis_20140211 Weight : 24.8 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 8800883
-Total events after event filters : 8.8e+06
-Total events after trigger : 2336336
-Total events after prefilter : 2.02e+06
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 577511
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.571
-number of standALoneMuons candidates complementary to track-based candidates = 0.727
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/WJetsToLNu_analysis_20140211 Weight : 3.63e+04 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 17264986
-Total events after event filters : 1.73e+07
-Total events after trigger : 18157
-Total events after prefilter : 1.51e+04
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 426
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.00257
-number of standALoneMuons candidates complementary to track-based candidates = 0.538
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/WW_analysis_20140211 Weight : 54.8 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 9187118
-Total events after event filters : 9.19e+06
-Total events after trigger : 161158
-Total events after prefilter : 1.5e+05
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 34147
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.0828
-number of standALoneMuons candidates complementary to track-based candidates = 0.0588
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/WZ_analysis_20140211 Weight : 33.2 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 9333633
-Total events after event filters : 9.33e+06
-Total events after trigger : 371777
-Total events after prefilter : 3.52e+05
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 118456
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.205
-number of standALoneMuons candidates complementary to track-based candidates = 0.148
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
-processing: /uscms_data/d3/msolmaz/myworkingspace/phys_698_spring_2014/CMSSW_5_3_8/src/workdirs/ZZ_analysis_20140211 Weight : 17.6 Ana : 5
-anaType_ : 5 dirName : muTrackAnalysis
-Total processed events : 8068643
-Total events after event filters : 8.07e+06
-Total events after trigger : 570208
-Total events after prefilter : 5.46e+05
-Using pileup file ../../AnalysisMacros/PileupFiles/pileup_muon_22Jan.root
-=========================================
-Printing cut values for analysis : 5
-And set of cuts : 0
-===
----> Lepton cuts
-Minimum track pt : 26
-Maximum eta : 2
-Require opposite sign d0 : 1
-Minimum d0 significance : 5
-Maximum d0 significance : 1e+08
-Maximum sum pt (isolation) : 0.1
-Maximum calo match delta R : 1e+06
----> Photon ID cuts
-Minimum photon R9 : -1
-Maximum photon H/E : 1e+05
-Maximum photon sigma ieta ieta barrel/endcap : 1e+05/1e+05
----> Di Lepton cuts
-Minimum Lxy significance : -1e+05
-Maximum Lxy significance : 1e+04
-Require opposite charged leptons : 0
-Require vertex : 1
-Maximum vertex Chi^2 : 5
-Maximum hits before vertex : 1e+04
-Maximum missing hits after vertex : 1e+04
-Minimum deltaR between leptons : 0.2
-Minimum cos(angle between leptons) : -0.79
-Maximum delta Phi : 1e+11
-Minimum invariant mass : 15
-=========================================
-Number of events : 202337
-[=====---------------------------------------------] 10%[==========----------------------------------------] 20%[===============-----------------------------------] 30%[====================------------------------------] 40%[=========================-------------------------] 50%[==============================--------------------] 60%[===================================---------------] 70%[========================================----------] 80%[=============================================-----] 90%[==================================================] 100%
-number of standALoneMuons candidates matched to track-based candidates = 0.219
-number of standALoneMuons candidates complementary to track-based candidates = 0.139
-Writing and closing files
-Deleting histograms
-Deleting tau histograms
